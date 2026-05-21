@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
 
-from ..qgis_plugin_tools.tools.resources import slug_name
+from qgis_plugin_tools.tools.resources import slug_name
 
 
 def test_meta():

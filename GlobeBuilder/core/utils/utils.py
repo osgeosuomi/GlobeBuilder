@@ -23,7 +23,7 @@ from qgis.core import QgsPrintLayout, QgsFillSymbol, QgsRuleBasedRenderer, QgsFe
     QgsCoordinateTransformContext, QgsCoordinateTransform
 
 from ...definitions.settings import WGS84
-from ...qgis_plugin_tools.tools.i18n import tr
+from qgis_plugin_tools.tools.i18n import tr
 
 
 def create_layout(layout_name, qgis_instance):

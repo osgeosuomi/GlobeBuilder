@@ -1,3 +1,0 @@
-[submodule "GlobeBuilder/qgis_plugin_tools"]
-	path = GlobeBuilder/qgis_plugin_tools
-	url = https://github.com/GispoCoding/qgis_plugin_tools.git

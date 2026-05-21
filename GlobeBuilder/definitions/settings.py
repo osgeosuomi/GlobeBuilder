@@ -25,7 +25,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
 from qgis.core import QgsCoordinateReferenceSystem
 
-from ..qgis_plugin_tools.tools.resources import resources_path
+from qgis_plugin_tools.tools.resources import resources_path
 
 
 class LayerConnectionType(enum.Enum):
