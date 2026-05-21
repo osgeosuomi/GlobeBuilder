@@ -34,11 +34,11 @@ from ..definitions.settings import (DEFAULT_MAX_NUMBER_OF_RESULTS, DEFAULT_USE_N
                                     DEFAULT_BACKGROUND_COLOR, DEFAULT_HALO_COLOR, DEFAULT_HALO_FILL_COLOR,
                                     DEFAULT_LAYOUT_BACKGROUND_COLOR, DEFAULT_COUNTRIES_COLOR,
                                     DEFAULT_GRATICULES_COLOR, DEFAULT_INTERSECTING_COUNTRIES_COLOR)
-from ..qgis_plugin_tools.tools.custom_logging import bar_msg
-from ..qgis_plugin_tools.tools.i18n import tr
-from ..qgis_plugin_tools.tools.resources import load_ui, plugin_name
-from ..qgis_plugin_tools.tools.settings import get_setting, set_setting
-from ..qgis_plugin_tools.tools.version import proj_version
+from qgis_plugin_tools.tools.custom_logging import bar_msg
+from qgis_plugin_tools.tools.i18n import tr
+from qgis_plugin_tools.tools.resources import load_ui, plugin_name
+from qgis_plugin_tools.tools.settings import get_setting, set_setting
+from qgis_plugin_tools.tools.version import proj_version
 
 FORM_CLASS = load_ui('globe_builder_dockwidget_base.ui')
 LOGGER = logging.getLogger(plugin_name())

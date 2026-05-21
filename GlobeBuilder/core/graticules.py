@@ -21,7 +21,7 @@ from qgis.core import (QgsProcessingFeedback, QgsVectorLayer, QgsFillSymbol,
                        QgsSymbolLayer, QgsFeatureRenderer)
 
 from ..definitions.settings import WGS84
-from ..qgis_plugin_tools.tools.i18n import tr
+from qgis_plugin_tools.tools.i18n import tr
 
 '''
 alg:

@@ -37,7 +37,7 @@ from ..definitions.projections import Projections
 
 
 @pytest.fixture(scope='function')
-def globe(new_project, qgis_iface) -> Globe:
+def globe(qgis_new_project, qgis_iface) -> Globe:
     globe = Globe(qgis_iface)
     globe.set_projection(Projections.AZIMUTHAL_ORTHOGRAPHIC)
     return globe

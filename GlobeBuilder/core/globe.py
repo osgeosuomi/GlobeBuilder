@@ -35,10 +35,10 @@ from ..definitions.settings import (LayerConnectionType, S2CLOUDLESS_WMTS_URL, L
                                     DEFAULT_LAYER_CONNECTION_TYPE, NATURAL_EARTH_BASE_URL,
                                     DEFAULT_ORIGIN,
                                     WGS84)
-from ..qgis_plugin_tools.tools.custom_logging import bar_msg
-from ..qgis_plugin_tools.tools.i18n import tr
-from ..qgis_plugin_tools.tools.resources import plugin_name
-from ..qgis_plugin_tools.tools.settings import get_setting
+from qgis_plugin_tools.tools.custom_logging import bar_msg
+from qgis_plugin_tools.tools.i18n import tr
+from qgis_plugin_tools.tools.resources import plugin_name
+from qgis_plugin_tools.tools.settings import get_setting
 
 LOGGER = logging.getLogger(plugin_name())
 

@@ -108,3 +108,12 @@ GlobeBuilder.iml
 /icon_large.xcf
 /GlobeBuilder.zip
 /GlobeBuilder/i18n/
+
+# pytest-qgis transient profile
+/.qgis-settings/
+
+# Ruff cache
+.ruff_cache/
+
+# uv / virtualenv
+.python-version

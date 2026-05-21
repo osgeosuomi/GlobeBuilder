@@ -27,7 +27,7 @@ from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManage
 from qgis.core import Qgis, QgsMessageLog
 
 from ...definitions.settings import NOMINATIM_URL, MAX_NAME_PARTS
-from ...qgis_plugin_tools.tools.resources import plugin_name
+from qgis_plugin_tools.tools.resources import plugin_name
 
 LOGGER = logging.getLogger(plugin_name())
 
