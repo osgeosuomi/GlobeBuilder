@@ -32,8 +32,8 @@ pytest-qgis (https://pypi.org/project/pytest-qgis) contains the following helpfu
 
 import pytest
 
-from ..core.globe import Globe
-from ..definitions.projections import Projections
+from globe_builder.core.globe import Globe
+from globe_builder.definitions.projections import Projections
 
 
 @pytest.fixture(scope='function')
