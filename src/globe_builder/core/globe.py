@@ -27,11 +27,11 @@ from qgis.core import (QgsProject, QgsCoordinateReferenceSystem, Qgis, QgsRaster
                        QgsMapThemeCollection, QgsLayoutItemMap,
                        QgsMapSettings, QgsRectangle, QgsLayoutPoint, QgsUnitTypes, QgsLayoutSize)
 
-from .graticules import Graticules
-from .halo import Halo
-from .utils.utils import set_selection_based_style, get_feature_ids_that_intersect_bbox
-from ..definitions.projections import Projections
-from ..definitions.settings import (LayerConnectionType, S2CLOUDLESS_WMTS_URL, LOCAL_DATA_DIR,
+from globe_builder.core.graticules import Graticules
+from globe_builder.core.halo import Halo
+from globe_builder.core.utils.utils import set_selection_based_style, get_feature_ids_that_intersect_bbox
+from globe_builder.definitions.projections import Projections
+from globe_builder.definitions.settings import (LayerConnectionType, S2CLOUDLESS_WMTS_URL, LOCAL_DATA_DIR,
                                     DEFAULT_LAYER_CONNECTION_TYPE, NATURAL_EARTH_BASE_URL,
                                     DEFAULT_ORIGIN,
                                     WGS84)

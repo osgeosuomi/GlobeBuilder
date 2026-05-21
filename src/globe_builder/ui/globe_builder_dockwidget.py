@@ -25,11 +25,11 @@ from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from qgis.PyQt import QtWidgets
 from qgis.core import QgsProject
 
-from ..core.globe import Globe
-from ..core.utils.geocoder import Geocoder
-from ..core.utils.utils import create_layout, transform_to_wgs84, get_map_center_coordinates
-from ..definitions.projections import Projections
-from ..definitions.settings import (DEFAULT_MAX_NUMBER_OF_RESULTS, DEFAULT_USE_NE_COUNTRIES,
+from globe_builder.core.globe import Globe
+from globe_builder.core.utils.geocoder import Geocoder
+from globe_builder.core.utils.utils import create_layout, transform_to_wgs84, get_map_center_coordinates
+from globe_builder.definitions.projections import Projections
+from globe_builder.definitions.settings import (DEFAULT_MAX_NUMBER_OF_RESULTS, DEFAULT_USE_NE_COUNTRIES,
                                     DEFAULT_USE_NE_GRATICULES, DEFAULT_USE_S2_CLOUDLESS, DEFAULT_ORIGIN,
                                     DEFAULT_BACKGROUND_COLOR, DEFAULT_HALO_COLOR, DEFAULT_HALO_FILL_COLOR,
                                     DEFAULT_LAYOUT_BACKGROUND_COLOR, DEFAULT_COUNTRIES_COLOR,

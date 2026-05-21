@@ -21,8 +21,8 @@ from qgis.core import (QgsFillSymbol, QgsEffectStack, QgsDropShadowEffect, QgsIn
                        QgsCoordinateTransform, QgsProject)
 from qgis.gui import QgisInterface
 
-from ..definitions.projections import Projections
-from ..definitions.settings import (TRANSPARENT_COLOR, HaloDrawMethod, EARTH_RADIUS, DEFAULT_HALO_DRAW_METHOD,
+from globe_builder.definitions.projections import Projections
+from globe_builder.definitions.settings import (TRANSPARENT_COLOR, HaloDrawMethod, EARTH_RADIUS, DEFAULT_HALO_DRAW_METHOD,
                                     DEFAULT_NUMBER_OF_SEGMENTS, WGS84)
 from qgis_plugin_tools.tools.i18n import tr
 from qgis_plugin_tools.tools.settings import get_setting

@@ -38,7 +38,7 @@ pip-delete-this-directory.txt
 # Unit test / coverage reports
 htmlcov/
 .tox/
-GlobeBuilder/.coverage
+src/globe_builder/.coverage
 .coverage.*
 .cache
 nosetests.xml
@@ -107,7 +107,10 @@ ENV/
 GlobeBuilder.iml
 /icon_large.xcf
 /GlobeBuilder.zip
-/GlobeBuilder/i18n/
+/src/globe_builder/resources/i18n/
+
+# Distribution
+/dist/
 
 # pytest-qgis transient profile
 /.qgis-settings/

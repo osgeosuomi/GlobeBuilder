@@ -22,7 +22,7 @@
 from qgis.core import QgsPrintLayout, QgsFillSymbol, QgsRuleBasedRenderer, QgsFeatureRequest, \
     QgsCoordinateTransformContext, QgsCoordinateTransform
 
-from ...definitions.settings import WGS84
+from globe_builder.definitions.settings import WGS84
 from qgis_plugin_tools.tools.i18n import tr
 
 

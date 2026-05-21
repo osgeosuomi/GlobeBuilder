@@ -20,7 +20,7 @@ from PyQt5.QtGui import QColor
 from qgis.core import (QgsProcessingFeedback, QgsVectorLayer, QgsFillSymbol,
                        QgsSymbolLayer, QgsFeatureRenderer)
 
-from ..definitions.settings import WGS84
+from globe_builder.definitions.settings import WGS84
 from qgis_plugin_tools.tools.i18n import tr
 
 '''

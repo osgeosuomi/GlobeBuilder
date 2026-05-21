@@ -19,22 +19,15 @@
 #  You should have received a copy of the GNU General Public License
 #  along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
 
-import os
-
-from qgis_plugin_tools.infrastructure.debugging import setup_pydevd
-
-if os.environ.get('QGIS_PLUGIN_USE_DEBUGGER') == 'pydevd':
-    if os.environ.get('IN_TESTS', "0") != "1" and os.environ.get('QGIS_PLUGIN_IN_CI', "0") != "1":
-        setup_pydevd()
+__version__ = "0.6.0"
 
 
 # noinspection PyPep8Naming
 def classFactory(iface):  # pylint: disable=invalid-name
-    """Load GlobeBuilder class from file GlobeBuilder.
+    """Load GlobeBuilder class from file globe_builder.plugin.
 
     :param iface: A QGIS interface instance.
     :type iface: QgsInterface
     """
-    #
-    from .plugin import GlobeBuilder
+    from globe_builder.plugin import GlobeBuilder
     return GlobeBuilder(iface)

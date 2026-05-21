@@ -24,9 +24,9 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
 from qgis.core import QgsProject, QgsProcessingException, Qgis
 
-from ..core.globe import Globe
-from ..definitions.projections import Projections
-from ..definitions.settings import (DEFAULT_ORIGIN)
+from globe_builder.core.globe import Globe
+from globe_builder.definitions.projections import Projections
+from globe_builder.definitions.settings import (DEFAULT_ORIGIN)
 
 
 def test_projection_change_with_default_origin(globe):
