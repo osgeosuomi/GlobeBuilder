@@ -17,8 +17,8 @@ dependencies = [
 ]
 
 [project.urls]
-homepage = "https://github.com/GispoCoding/GlobeBuilder"
-repository = "https://github.com/GispoCoding/GlobeBuilder"
+homepage = "https://github.com/osgeosuomi/GlobeBuilder"
+repository = "https://github.com/osgeosuomi/GlobeBuilder"
 
 [tool.uv]
 package = false

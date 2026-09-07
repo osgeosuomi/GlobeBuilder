@@ -9,12 +9,12 @@ qgisMinimumVersion=3.2
 description=This plugin is meant for adding globe visualization to the current map or layout.
 version=0.5.0
 author=Gispo Ltd.
-email=joona@gispo.fi
+email=code@osgeo.fi
 
 about=This plugin builds a globe from Natural Earth countries GeoJSON and an Azimuthal orthographic projection ("world from space") projection described <a href="http://www.statsmapsnpix.com/2019/09/globe-projections-and-insets-in-qgis.html">here</a>. This plugin uses <a href="https://wiki.openstreetmap.org/wiki/Nominatim">OpenStreetMap Nominatim</a> geocoding API. The OpenStreetMap data is licensed under <a href="https://opendatacommons.org/licenses/odbl/">ODbL license</a>. Made with Natural Earth. Free vectior and raster map data <a href="naturalearthdata.com">naturalearthdata.com</a>. This plugin lists Sentinel-2 cloudless as an optional data source. Sentinel-2 cloudless data <a href="https://s2maps.eu/">https://s2maps.eu/</a> by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2017 & 2018) released under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. For commercial usage of Sentinel-2 cloudless please see <a href="https://cloudless.eox.at">https://cloudless.eox.at</a>.
 
-tracker=https://github.com/GispoCoding/GlobeBuilder/issues
-repository=https://github.com/GispoCoding/GlobeBuilder
+tracker=https://github.com/osgeosuomi/GlobeBuilder/issues
+repository=https://github.com/osgeosuomi/GlobeBuilder
 # End of mandatory metadata
 
 # Recommended items:
@@ -26,7 +26,7 @@ changelog=
 # Tags are comma separated with spaces allowed
 tags=python, globe, world
 
-homepage=https://github.com/GispoCoding/GlobeBuilder
+homepage=https://github.com/osgeosuomi/GlobeBuilder
 category=Plugins
 icon=icon.png
 # experimental flag
