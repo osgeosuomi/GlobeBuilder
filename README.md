@@ -1,9 +1,9 @@
 Globe Builder
 =============
-![](https://github.com/GispoCoding/GlobeBuilder/workflows/Tests/badge.svg)
-[![codecov.io](https://codecov.io/github/GispoCoding/GlobeBuilder/coverage.svg?branch=master)](https://codecov.io/github/GispoCoding/GlobeBuilder?branch=master)
-![](https://github.com/GispoCoding/GlobeBuilder/workflows/Release/badge.svg)
-![](https://github.com/GispoCoding/GlobeBuilder/workflows/Translations/badge.svg)
+![](https://github.com/osgeosuomi/GlobeBuilder/workflows/Tests/badge.svg)
+[![codecov.io](https://codecov.io/github/osgeosuomi/GlobeBuilder/coverage.svg?branch=master)](https://codecov.io/github/osgeosuomi/GlobeBuilder?branch=master)
+![](https://github.com/osgeosuomi/GlobeBuilder/workflows/Release/badge.svg)
+![](https://github.com/osgeosuomi/GlobeBuilder/workflows/Translations/badge.svg)
 [![GPLv2 license](https://img.shields.io/badge/License-GPLv2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 
 QGIS 3 plugin that is meant for adding globe visualization to the current map using.
@@ -18,7 +18,7 @@ Inspired by these blog posts by
 
 The plugin is still in beta-development. Please report issues preferably to Issues.
 
-**Developed by [Gispo Ltd.](https://www.gispo.fi/en/home/)**
+Created by [Gispo Ltd.](https://www.gispo.fi/en/home/), maintained by [OSGeo Suomi](https://www.osgeo.fi/).
 
 ## Installation instructions
 ### QGIS Plugin
@@ -33,7 +33,7 @@ repository:
 
 
 ## Usage
-
+ 
 The Globe could be added either to the current map or to a layout.
 
 ![Plugin in layout mode](/images/screenshots/layout1.gif?raw=true "Plugin in layout mode")
