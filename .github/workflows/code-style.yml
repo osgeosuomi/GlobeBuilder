@@ -1,0 +1,31 @@
+name: Code Style
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  prek:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # The update-translations hook needs pylupdate6
+      - name: Install Qt translation tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends pyqt6-dev-tools
+
+      - name: Run prek
+        uses: j178/prek-action@4e14d07f9231acabce116ccfca13b13dd9755ece # v3.0.0

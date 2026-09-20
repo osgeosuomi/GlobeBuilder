@@ -1,0 +1,42 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    container:
+      image: qgis/qgis:${{ matrix.qgis-image-tag }}
+    strategy:
+      matrix:
+        # Adjust image tags as needed
+        qgis-image-tag: ["3.40-noble", "3.44-noble", "4.0-questing", "latest"]
+      fail-fast: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+
+      - name: Install venv
+        run: |
+          uv venv --system-site-packages
+
+      - name: Run tests
+        run: |
+          uv sync --all-packages --all-groups --locked --active
+          uv run pytest test -v --qgis_disable_gui
