@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 #  Copyright (C) 2020-2021 GlobeBuilder contributors.
 #
 #
@@ -19,77 +16,67 @@
 #  You should have received a copy of the GNU General Public License
 #  along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
 
-from qgis.PyQt.QtCore import QTranslator, QCoreApplication, Qt
+from qgis.PyQt.QtCore import QCoreApplication, Qt, QTranslator
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
-
-from globe_builder.ui.globe_builder_dockwidget import GlobeBuilderDockWidget
 from qgis_plugin_tools.tools.custom_logging import setup_logger, teardown_logger
 from qgis_plugin_tools.tools.i18n import setup_translation, tr
 from qgis_plugin_tools.tools.resources import plugin_name, resources_path
 
+import logging
+import typing
+
+import qgis_plugin_tools
+from qgis.PyQt.QtWidgets import QMessageBox
+from qgis.utils import iface as utils_iface
+from qgis_plugin_tools.tools import custom_logging
+from qgis_plugin_tools.tools.decorations import log_if_fails
+from qgis_plugin_tools.tools.i18n import tr
+
+import template_plugin
+from template_plugin import env
+
+if typing.TYPE_CHECKING:
+    from qgis.gui import QgisInterface
+
+
+
+
+from globe_builder.ui.globe_builder_dockwidget import GlobeBuilderDockWidget
+
+LOGGER = logging.getLogger(__name__)
+
+iface = typing.cast("QgisInterface", utils_iface)
 
 class GlobeBuilder:
     """QGIS Plugin Implementation."""
 
-    def __init__(self, iface):
-        """Constructor.
+    def __init__(self):
+        self._teardown_loggers = lambda: None
 
-        :param iface: An interface instance that will be passed to this class
-            which provides the hook by which you can manipulate the QGIS
-            application at run time.
-        :type iface: QgsInterface
-        """
-        # Save reference to the QGIS interface
-        self.iface = iface
-
-        setup_logger(plugin_name())
-
-        # initialize locale
-        locale, file_path = setup_translation()
-        if file_path:
-            translator = QTranslator()
-            translator.load(file_path)
-            # noinspection PyCallByClass,PyArgumentList
-            QCoreApplication.installTranslator(translator)
-        else:
-            pass
 
         # Declare instance attributes
         self.actions = []
-        self.menu = tr(u'&Globe Builder')
+        self.menu = tr("&Globe Builder")
 
         # Check if plugin was started the first time in current QGIS session
         # Must be set in initGui() to survive plugin reloads
         self.pluginIsActive = False
         self.dockwidget = None
 
-    # noinspection PyMethodMayBeStatic
-    def tr(self, message):
-        """Get the translation for a string using Qt translation API.
-
-        We implement this ourselves since we do not inherit QObject.
-
-        :param message: String for translation.
-        :type message: str, QString
-
-        :returns: Translated version of message.
-        :rtype: QString
-        """
-        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-        return QCoreApplication.translate('GlobeBuilder', message)
 
     def add_action(
-            self,
-            icon_path,
-            text,
-            callback,
-            enabled_flag=True,
-            add_to_menu=True,
-            add_to_toolbar=True,
-            status_tip=None,
-            whats_this=None,
-            parent=None):
+        self,
+        icon_path,
+        text,
+        callback,
+        enabled_flag=True,
+        add_to_menu=True,
+        add_to_toolbar=True,
+        status_tip=None,
+        whats_this=None,
+        parent=None,
+    ):
         """Add a toolbar icon to the toolbar.
 
         :param icon_path: Path to the icon for this action. Can be a resource
@@ -128,7 +115,6 @@ class GlobeBuilder:
             added to self.actions list.
         :rtype: QAction
         """
-
         icon = QIcon(icon_path)
         action = QAction(icon, text, parent)
         # noinspection PyUnresolvedReferences
@@ -143,12 +129,10 @@ class GlobeBuilder:
 
         if add_to_toolbar:
             # Adds plugin icon to Plugins toolbar
-            self.iface.addToolBarIcon(action)
+            iface.addToolBarIcon(action)
 
         if add_to_menu:
-            self.iface.addPluginToMenu(
-                self.menu,
-                action)
+            iface.addPluginToMenu(self.menu, action)
 
         self.actions.append(action)
 
@@ -156,20 +140,36 @@ class GlobeBuilder:
 
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
+        global iface  # noqa: PLW0602
+
+        self._teardown_loggers = custom_logging.setup_loggers(
+            template_plugin.__name__,
+            qgis_plugin_tools.__name__,
+            message_log_name=tr("Template Plugin"),
+        )
 
         # noinspection PyTypeChecker
         self.add_action(
-            resources_path('icon.png'),
-            text=tr(u'Build Globe view'),
+            resources_path("icon.png"),
+            text=tr("Build Globe view"),
             callback=self.run,
-            parent=self.iface.mainWindow())
+            parent=iface.mainWindow(),
+        )
 
         # will be set False in run()
         self.first_start = True
 
+        if hasattr(iface, "initializationCompleted"):
+            iface.initializationCompleted.connect(self.iface_initialization_completed)
+
+        if bool(env.IS_DEVELOPMENT_MODE):
+            self.iface_initialization_completed()
+
+        LOGGER.info("Plugin initialized")
+
+
     def onClosePlugin(self):
         """Cleanup necessary items here when plugin dockwidget is closed"""
-
         # disconnects
         self.dockwidget.closingPlugin.disconnect(self.onClosePlugin)
 
@@ -184,11 +184,18 @@ class GlobeBuilder:
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
         for action in self.actions:
-            self.iface.removePluginMenu(
-                tr(u'&Globe Builder'),
-                action)
-            self.iface.removeToolBarIcon(action)
-        teardown_logger(plugin_name())
+            iface.removePluginMenu(tr("&Globe Builder"), action)
+            iface.removeToolBarIcon(action)
+        self._teardown_loggers()
+        self._teardown_loggers = lambda: None
+
+    @log_if_fails
+    def iface_initialization_completed(self) -> None:
+        """Run additional setup for the plugin.
+
+        Executed after initializationCompleted signal is emitted.
+        """
+        LOGGER.debug("iface initialization completed")
 
     def run(self):
         """Run method that performs all the real work"""
@@ -206,5 +213,5 @@ class GlobeBuilder:
             self.dockwidget.closingPlugin.connect(self.onClosePlugin)
 
             # show the dockwidget
-            self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dockwidget)
+            iface.addDockWidget(Qt.RightDockWidgetArea, self.dockwidget)
             self.dockwidget.show()

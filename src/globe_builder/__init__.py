@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 #  Copyright (C) 2020-2021 GlobeBuilder contributors.
 #
 #
@@ -19,15 +16,30 @@
 #  You should have received a copy of the GNU General Public License
 #  along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
 
-__version__ = "0.6.0"
+
+import typing
+
+from qgis.utils import plugins
+
+from globe_builder.utils import i18n_utils
+
+if typing.TYPE_CHECKING:
+    from qgis.PyQt import QtCore
+
+    from globe_builder.plugin import Plugin
+
+TRANSLATORS: "list[QtCore.QTranslator]" = []
 
 
-# noinspection PyPep8Naming
-def classFactory(iface):  # pylint: disable=invalid-name
-    """Load GlobeBuilder class from file globe_builder.plugin.
+def classFactory(_) -> "Plugin":  # noqa: ANN001, N802
+    """Class factory."""
+    TRANSLATORS.extend(i18n_utils.setup_all_translators())
 
-    :param iface: A QGIS interface instance.
-    :type iface: QgsInterface
-    """
-    from globe_builder.plugin import GlobeBuilder
-    return GlobeBuilder(iface)
+    from globe_builder.plugin import Plugin  # noqa: PLC0415
+
+    return Plugin()
+
+
+def get_instance() -> "Plugin | None":
+    """Get instance."""
+    return plugins.get(__name__)

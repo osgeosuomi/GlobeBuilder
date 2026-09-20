@@ -1,0 +1,84 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+default_stages: [pre-commit]
+default_install_hook_types: [pre-commit, commit-msg]
+
+default_language_version:
+  python: python3.14
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+        name: LF for all files
+        args: [--fix=lf]
+        exclude: '\.bat$'
+      - id: mixed-line-ending
+        name: CRLF for windows scripts
+        args: [--fix=crlf]
+        files: '\.bat$'
+      - id: check-yaml
+      - id: check-json
+      - id: check-added-large-files
+      - id: check-merge-conflict
+        args: [--assume-in-merge]
+
+  # TOML files
+  - repo: https://github.com/ComPWA/taplo-pre-commit
+    rev: ade0f95ddcf661c697d4670d2cfcbe95d0048a0a  # frozen: v0.9.3
+    hooks:
+      - id: taplo-format
+
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: 5b5dddc4fb0f83c3ea1fc5616fa63e115dce83e0  # frozen: v0.49.1
+    hooks:
+      - id: markdownlint
+        files: \.md$
+        args: [ "--fix" ]
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.8
+    hooks:
+      - id: ruff-check
+        args: [ --fix, --exit-non-zero-on-fix, --extend-fixable=F401 ]
+      - id: ruff-format
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.3.0
+    hooks:
+      - id: flake8
+        additional_dependencies:
+          - flake8-pyproject==1.2.4
+          - flake8-spellcheck==0.28.0
+          - flake8-qgis==2.1.0
+
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.9.4
+    hooks:
+      - id: bandit
+        args: [ "-c", "pyproject.toml" ]
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev:  v2.3.1
+    hooks:
+      - id: mypy
+        additional_dependencies:
+          - PyQt6-stubs==20250824
+
+  - repo: https://github.com/nlsfi/qgis-plugin-dev-tools
+    rev: v0.13.1
+    hooks:
+      - id: update-translations
+      - id: normalize-xml
+
+  # commit-msg hooks
+  # Commit messages should follow [Conventional Commits notation](https://www.conventionalcommits.org/en/v1.0.0/#summary).
+  - repo: https://github.com/jorisroovers/gitlint
+    rev: v0.19.1
+    hooks:
+      - id: gitlint
+        stages: [ commit-msg ]

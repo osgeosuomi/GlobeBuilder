@@ -1,0 +1,11 @@
+// Based on https://github.com/DavidAnson/markdownlint/blob/v0.41.1/schema/.markdownlint.jsonc
+// All rules active by default, disable MD013 if needed
+{
+  // MD013/line-length : Line length : https://github.com/DavidAnson/markdownlint/blob/v0.41.1/doc/md013.md
+  "MD013": {
+    "line_length": 88,
+    "heading_line_length": 80,
+    // Include code blocks
+    "code_blocks": false
+  }
+}

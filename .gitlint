@@ -1,0 +1,32 @@
+# See https://jorisroovers.com/gitlint/configuration for details
+[general]
+ignore=body-is-missing
+
+# Enable community contributed rules
+# See http://jorisroovers.github.io/gitlint/contrib_rules for details
+contrib=contrib-title-conventional-commits
+
+[title-max-length]
+line-length=72
+
+[title-min-length]
+min-length=10
+
+[title-match-regex]
+regex=: [^A-Z]
+
+[title-must-not-contain-word]
+# Comma-separated list of words that should not occur in the title. Matching is case
+# insensitive. It's fine if the keyword occurs as part of a larger word (so "WIPING"
+# will not cause a violation, but "WIP: my title" will.
+words=wip
+
+[body-max-line-length]
+line-length=80
+
+[body-min-length]
+min-length=0
+
+[contrib-title-conventional-commits]
+# Specify allowed commit types. For details see: https://www.conventionalcommits.org/
+types=chore,ci,docs,feat,fix,perf,refactor,style,test

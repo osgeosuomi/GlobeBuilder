@@ -1,0 +1,48 @@
+{
+    "extensions": {
+        "recommendations": [
+            "editorconfig.editorconfig",
+            "davidanson.vscode-markdownlint",
+            "mikestead.dotenv",
+            "tamasfe.even-better-toml",
+            "ms-python.python",
+            "ms-python.mypy-type-checker",
+            "ms-python.flake8",
+            "charliermarsh.ruff",
+        ]
+    },
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "python.languageServer": "Pylance",
+        // Tests
+        "python.testing.pytestEnabled": true,
+        // Linting
+        "flake8.importStrategy": "fromEnvironment",
+        "ruff.importStrategy": "fromEnvironment",
+        "mypy-type-checker.importStrategy": "fromEnvironment",
+        // Formatting
+        "editor.formatOnSave": true,
+        "[python]": {
+            "editor.codeActionsOnSave": {
+                "source.organizeImports.ruff": "explicit",
+                "source.fixAll": "explicit"
+            },
+            "editor.defaultFormatter": "charliermarsh.ruff"
+        },
+        // To override ruff settings in pyproject.toml, add ruff.lint.args to your user/folder settings, e.g.:
+        // "ruff.lint.args": [
+        //     "--extend-fixable=F841,F401"
+        // ],
+        "files.associations": {
+            "*.ts": "xml",
+            "*.qml": "xml"
+        },
+        "editor.codeActionsOnSave": {
+            "source.fixAll.markdownlint": "explicit"
+        }
+    }
+}

@@ -1,17 +1,3 @@
-"""
-This class contains fixtures and common helper function to keep the test files shorter
-
-pytest-qgis (https://pypi.org/project/pytest-qgis) contains the following helpful fixtures:
-
-* qgis_app initializes and returns fully configured QgsApplication.
-  This fixture is called automatically on the start of pytest session.
-* qgis_canvas initializes and returns QgsMapCanvas
-* qgis_iface returns mocked QgsInterface
-* new_project makes sure that all the map layers and configurations are removed.
-  This should be used with tests that add stuff to QgsProject.
-
-"""
-
 #  Copyright (C) 2020-2021 GlobeBuilder contributors.
 #
 #
@@ -31,13 +17,37 @@ pytest-qgis (https://pypi.org/project/pytest-qgis) contains the following helpfu
 #  along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
 
 import pytest
+from qgis.core import QgsProject
 
 from globe_builder.core.globe import Globe
 from globe_builder.definitions.projections import Projections
 
+"""
+!!! IMPORTANT !!!
+DO NOT import anything that imports qgis.utils.iface
+(or some module that imports other module that imports it) in conftest root!
+Importing those modules in fixtures is OK.
 
-@pytest.fixture(scope='function')
-def globe(qgis_new_project, qgis_iface) -> Globe:
+The same goes with globe_builder.env.py.
+"""
+
+
+@pytest.fixture(autouse=True)
+def _set_env(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Set environment variables for tests."""
+    monkeypatch.setenv("IS_DEVELOPMENT_MODE", "yes")
+
+
+@pytest.fixture(autouse=True)
+def _reset_session_state(
+    qgis_new_project: None,
+) -> None:
+    if project_instance := QgsProject.instance():
+        project_instance.clear()
+
+
+@pytest.fixture(scope="function")
+def globe(qgis_iface) -> Globe:
     globe = Globe(qgis_iface)
     globe.set_projection(Projections.AZIMUTHAL_ORTHOGRAPHIC)
     return globe
