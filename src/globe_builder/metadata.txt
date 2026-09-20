@@ -5,7 +5,8 @@
 
 [general]
 name=Globe Builder
-qgisMinimumVersion=3.2
+qgisMinimumVersion=3.40
+qgisMaximumVersion=4.99
 description=This plugin is meant for adding globe visualization to the current map or layout.
 version=0.5.0
 author=Gispo Ltd.
@@ -42,4 +43,3 @@ deprecated=False
 
 # If the plugin can run on QGIS Server.
 server=False
-
