@@ -1,0 +1,24 @@
+name: Create draft release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        required: true
+        description: Version number without "v" tag prefix (i.e. "1.0.0")
+
+jobs:
+  draft-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # Inspect the draft release and make sure it is correct before publishing
+      - name: Create a draft release into Github releases
+        uses: nlsfi/python-repo-draft-release-action@f2c3e8836f3c2a66542bf051d1d8680a830bdea6 # v1.0.1
+        with:
+          version: ${{ inputs.version }}
+          version_file: pyproject.toml

@@ -1,6 +1,7 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: v0.2.0
+_commit: v0.3.1
 _src_path: https://github.com/osgeosuomi/qgis-plugin-copier-template.git
+github_workflows: true
 insert_copyright_header: true
 lang_key_for_translations: fi
 plugin_metadata_author: Gispo Ltd

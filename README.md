@@ -3,7 +3,6 @@
 ![Tests](https://github.com/osgeosuomi/GlobeBuilder/workflows/Tests/badge.svg)
 [![codecov.io](https://codecov.io/github/osgeosuomi/GlobeBuilder/coverage.svg?branch=master)](https://codecov.io/github/osgeosuomi/GlobeBuilder?branch=master)
 ![Release](https://github.com/osgeosuomi/GlobeBuilder/workflows/Release/badge.svg)
-![Translations](https://github.com/osgeosuomi/GlobeBuilder/workflows/Translations/badge.svg)
 [![GPLv2 license](https://img.shields.io/badge/License-GPLv2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 
 QGIS plugin that is meant for adding globe visualization to the current map using.

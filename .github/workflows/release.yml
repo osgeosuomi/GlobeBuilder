@@ -2,27 +2,54 @@ name: Release
 
 on:
   release:
-    types: published
+    types: released
 
 jobs:
-  plugin_dst:
+  publish:
+    name: Publish plugin to QGIS plugin repository
     runs-on: ubuntu-latest
-
+    container:
+      image: qgis/qgis:3.44-noble
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
         with:
-          submodules: true
+          python-version: "3.12"
 
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v1
+      - name: Build QGIS Plugin
+        run: |
+          rm -rf dist
+          uv sync --no-editable
+          uv run --no-editable qgis-plugin-dev-tools build
+
+      - name: Scan the plugin build
+        run: |
+          mkdir -p build_scan
+          python3 -m zipfile -e dist/*.zip build_scan/
+          # Scan for high severity only (-lll), matching qgis policy
+          # https://plugins.qgis.org/docs/security-scanning/tools
+          uv run bandit -r build_scan/ -lll
+
+      - name: Smoke test the plugin build
+        run: |
+          PYTHONPATH=build_scan python3 -c \
+            "from globe_builder.plugin import Plugin"
+
+      - name: Publish QGIS Plugin
+        run: |
+          uv run --no-editable qgis-plugin-dev-tools publish dist/*.zip
+        env:
+          # Make sure these are set in your repository secrets
+          QPDT_PUBLISH_USERNAME: ${{ secrets.QGIS_REPO_USERNAME }}
+          QPDT_PUBLISH_PASSWORD: ${{ secrets.QGIS_REPO_PASSWORD }}
+
+      - name: Upload plugin zip to release
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de # v2.11.5
         with:
-          python-version: 3.8
-
-      - name: Install Qt lrelease
-        run: sudo apt-get install qt5-default qttools5-dev-tools
-
-      - name: Install qgis-plugin-ci
-        run: pip3 install qgis-plugin-ci
-
-      - name: Deploy plugin
-        run: qgis-plugin-ci release ${GITHUB_REF/refs\/tags\//} --github-token ${{ secrets.GITHUB_TOKEN }} --osgeo-username Joonala --osgeo-password ${{ secrets.OSGEO_PASSWORD }} --transifex-token ${{ secrets.TRANSIFEX_TOKEN }} --disable-submodule-update
+          file: dist/*
+          file_glob: true
