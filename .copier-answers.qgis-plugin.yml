@@ -1,12 +1,12 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
 _commit: v0.2.0
 _src_path: https://github.com/osgeosuomi/qgis-plugin-copier-template.git
-insert_copyright_header: false
+insert_copyright_header: true
 lang_key_for_translations: fi
 plugin_metadata_author: Gispo Ltd
 plugin_metadata_email: code@osgeo.fi
 plugin_metadata_repository_url: https://github.com/osgeosuomi/GlobeBuilder
-python_version: '3.14'
+python_version: '3.12'
 qgis_plugin_class: Plugin
 qgis_plugin_description: QGIS plugin that is meant for adding globe visualization
     to the current map
