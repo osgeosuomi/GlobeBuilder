@@ -1,4 +1,4 @@
-#  Copyright (C) 2020-2021 GlobeBuilder contributors.
+#  Copyright (C) 2020-2026 GlobeBuilder contributors.
 #
 #
 #  This file is part of GlobeBuilder.
