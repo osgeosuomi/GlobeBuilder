@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 #  Copyright (C) 2020-2021 GlobeBuilder contributors.
 #
 #
@@ -19,20 +16,43 @@
 #  You should have received a copy of the GNU General Public License
 #  along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
 
-from qgis.core import QgsPrintLayout, QgsFillSymbol, QgsRuleBasedRenderer, QgsFeatureRequest, \
-    QgsCoordinateTransformContext, QgsCoordinateTransform
+import typing
 
-from globe_builder.definitions.settings import WGS84
+from qgis.core import (
+    QgsCoordinateTransform,
+    QgsCoordinateTransformContext,
+    QgsFeatureRequest,
+    QgsFillSymbol,
+    QgsPrintLayout,
+    QgsRuleBasedRenderer,
+)
+from qgis.utils import iface as utils_iface
 from qgis_plugin_tools.tools.i18n import tr
 
+from globe_builder.definitions.settings import WGS84
 
-def create_layout(layout_name, qgis_instance):
+if typing.TYPE_CHECKING:
+    from qgis.core import (
+        QgsCoordinateReferenceSystem,
+        QgsPointXY,
+        QgsProject,
+        QgsRectangle,
+        QgsVectorLayer,
+    )
+    from qgis.gui import QgisInterface
+    from qgis.PyQt.QtGui import QColor
+
+iface = typing.cast("QgisInterface", utils_iface)
+
+
+def create_layout(layout_name: str, qgis_instance: "QgsProject") -> QgsPrintLayout:
+    """Create a new print layout, replacing any existing layout with the same name."""
     manager = qgis_instance.layoutManager()
     layouts_list = manager.printLayouts()
     # remove any duplicate layouts
-    for layout in layouts_list:
-        if layout.name() == layout_name:
-            manager.removeLayout(layout)
+    for existing_layout in layouts_list:
+        if existing_layout.name() == layout_name:
+            manager.removeLayout(existing_layout)
     layout = QgsPrintLayout(qgis_instance)
     layout.initializeDefaults()
     layout.setName(layout_name)
@@ -40,17 +60,22 @@ def create_layout(layout_name, qgis_instance):
     return layout
 
 
-def set_selection_based_style(layer, s_color, else_color):
+def set_selection_based_style(
+    layer: "QgsVectorLayer", s_color: "QColor", else_color: "QColor"
+) -> "QgsVectorLayer":
+    """Style selected features with one color and the rest with another."""
     # noinspection PyCallByClass,PyArgumentList
-    fill_for_selected = QgsFillSymbol.createSimple({'color': 'blue'})
+    fill_for_selected = QgsFillSymbol.createSimple({"color": "blue"})
     fill_for_selected.setColor(s_color)
-    rule_s = QgsRuleBasedRenderer.Rule(fill_for_selected, label=tr(u"Selected"),
-                                       filterExp="is_selected()")
+    rule_s = QgsRuleBasedRenderer.Rule(
+        fill_for_selected, label=tr("Selected"), filterExp="is_selected()"
+    )
 
     fill_for_else = fill_for_selected.clone()
     fill_for_else.setColor(else_color)
-    rule_else = QgsRuleBasedRenderer.Rule(fill_for_else, label=tr(u"Not Selected"),
-                                          elseRule=True)
+    rule_else = QgsRuleBasedRenderer.Rule(
+        fill_for_else, label=tr("Not Selected"), elseRule=True
+    )
 
     renderer = QgsRuleBasedRenderer(QgsRuleBasedRenderer.Rule(None))
     root_rule = renderer.rootRule()
@@ -61,22 +86,39 @@ def set_selection_based_style(layer, s_color, else_color):
     return layer
 
 
-def transform_to_wgs84(geom, crs, qgis_instance):
+def transform_to_wgs84(
+    point: "QgsPointXY",
+    crs: "QgsCoordinateReferenceSystem",
+    qgis_instance: "QgsProject",
+) -> "QgsPointXY":
+    """Transform a point from the given CRS to WGS84."""
     transformer = QgsCoordinateTransform(crs, WGS84, qgis_instance)
-    return transformer.transform(geom)
+    return transformer.transform(point)
 
 
-def get_feature_ids_that_intersect_bbox(layer, rect, crs):
-    request = (QgsFeatureRequest()
-               .setFilterRect(rect)
-               .setDestinationCrs(crs=crs, context=QgsCoordinateTransformContext())
-               .setNoAttributes().setFlags(QgsFeatureRequest.NoGeometry))
+def get_feature_ids_that_intersect_bbox(
+    layer: "QgsVectorLayer",
+    rectangle: "QgsRectangle",
+    crs: "QgsCoordinateReferenceSystem",
+) -> list[int]:
+    """Get ids of the features intersecting the rectangle given in the CRS."""
+    request = (
+        QgsFeatureRequest()
+        .setFilterRect(rectangle)
+        .setDestinationCrs(crs=crs, context=QgsCoordinateTransformContext())
+        .setNoAttributes()
+        .setFlags(QgsFeatureRequest.Flag.NoGeometry)
+    )
     return [f.id() for f in layer.getFeatures(request)]
 
 
-def get_map_center_coordinates(iface, qgis_instance, frmt="{:.0f}"):
+def get_map_center_coordinates(
+    qgis_instance: "QgsProject", number_format: str = "{:.0f}"
+) -> dict[str, float]:
+    """Get the center of the map canvas in WGS84 coordinates."""
     center_point = iface.mapCanvas().extent().center()
-    center_point = transform_to_wgs84(center_point, qgis_instance.crs(),
-                                      qgis_instance)
-    center = {'lon': float(frmt.format(center_point.x())), 'lat': float(frmt.format(center_point.y()))}
-    return center
+    center_point = transform_to_wgs84(center_point, qgis_instance.crs(), qgis_instance)
+    return {
+        "lon": float(number_format.format(center_point.x())),
+        "lat": float(number_format.format(center_point.y())),
+    }

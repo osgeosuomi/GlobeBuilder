@@ -1,25 +1,16 @@
 from typing import TYPE_CHECKING
 
 import pytest
-from qgis.PyQt.QtWidgets import QMessageBox
 
 from globe_builder import classFactory
+from globe_builder.ui.globe_builder_dockwidget import GlobeBuilderDockWidget
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
-    from unittest.mock import MagicMock
 
-    from pytest_mock import MockerFixture
     from pytest_qgis import QgisInterface
 
     from globe_builder.plugin import Plugin
-
-
-@pytest.fixture(autouse=True)
-def mock_message_box_ok(mocker: "MockerFixture") -> "MagicMock":
-    return mocker.patch.object(
-        QMessageBox, "information", return_value=QMessageBox.StandardButton.Ok
-    )
 
 
 @pytest.fixture
@@ -32,10 +23,17 @@ def plugin_loaded(qgis_iface: "QgisInterface") -> "Iterator[Plugin]":
     plugin.unload()
 
 
-def test_plugin_loads_without_errors(
-    mock_message_box_ok: "MagicMock", plugin_loaded: "Plugin"
-) -> None:
-    mock_message_box_ok.assert_called_once()
+def test_plugin_loads_without_errors(plugin_loaded: "Plugin") -> None:
+    assert len(plugin_loaded.actions) == 1
+    assert plugin_loaded.dockwidget is None
 
-    # TODO: assert components initialized etc.
-    # assert plugin_loaded.toolbar is not None
+
+def test_plugin_run_shows_dockwidget(plugin_loaded: "Plugin") -> None:
+    plugin_loaded.run()
+
+    assert isinstance(plugin_loaded.dockwidget, GlobeBuilderDockWidget)
+    assert plugin_loaded.plugin_is_active
+
+    plugin_loaded.dockwidget.close()
+
+    assert not plugin_loaded.plugin_is_active

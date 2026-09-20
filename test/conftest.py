@@ -16,11 +16,13 @@
 #  You should have received a copy of the GNU General Public License
 #  along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
 
+from typing import TYPE_CHECKING
+
 import pytest
 from qgis.core import QgsProject
 
-from globe_builder.core.globe import Globe
-from globe_builder.definitions.projections import Projections
+if TYPE_CHECKING:
+    from globe_builder.core.globe import Globe
 
 """
 !!! IMPORTANT !!!
@@ -46,8 +48,9 @@ def _reset_session_state(
         project_instance.clear()
 
 
-@pytest.fixture(scope="function")
-def globe(qgis_iface) -> Globe:
-    globe = Globe(qgis_iface)
-    globe.set_projection(Projections.AZIMUTHAL_ORTHOGRAPHIC)
-    return globe
+@pytest.fixture
+def globe() -> "Globe":
+    from globe_builder.core.globe import Globe  # noqa: PLC0415
+    from globe_builder.definitions.projections import Projections  # noqa: PLC0415
+
+    return Globe(projection=Projections.AZIMUTHAL_ORTHOGRAPHIC)
