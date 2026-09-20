@@ -4,7 +4,7 @@ build-backend = "uv_build"
 
 [project]
 name = "globe-builder"
-requires-python = ">=3.14"
+requires-python = ">=3.12"
 version = "0.0.0.post0"
 description = "QGIS plugin for adding globe visualization to the current map or layout."
 readme = "README.md"
@@ -65,7 +65,7 @@ lint = [
 ]
 
 [tool.ruff]
-target-version = "py314"
+target-version = "py312"
 line-length = 88
 
 lint.ignore = [
@@ -75,7 +75,6 @@ lint.ignore = [
   "D104",  # Missing docstring in public package
   "D105",  # Missing docstring in magic method
   "D107",  # Missing docstring in `__init__`
-  "CPY",   # flake8-copyright (CPY)
   # Conflicting rules (formatter)
   "D203",   # one-blank-line-before-class, D211 used (no-blank-line-before-class)
   "D213",   # multi-line-summary-second-line, D212 used (multi-line-summary-first-line)
@@ -139,7 +138,7 @@ per-file-ignores = [
 exclude_dirs = ["test"]
 
 [tool.mypy]
-python_version = "3.14"
+python_version = "3.12"
 follow_imports = "normal"
 show_column_numbers = true
 check_untyped_defs = true

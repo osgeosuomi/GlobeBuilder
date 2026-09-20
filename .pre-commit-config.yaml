@@ -4,7 +4,7 @@ default_stages: [pre-commit]
 default_install_hook_types: [pre-commit, commit-msg]
 
 default_language_version:
-  python: python3.14
+  python: python3.12
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -39,6 +39,16 @@ repos:
       - id: markdownlint
         files: \.md$
         args: [ "--fix" ]
+
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.5.6
+    hooks:
+      - id: insert-license  # Insert a short license disclaimer as a header comment in source files
+        files: \.py$
+        args:
+          - --license-filepath
+          - copyright-header.txt
+          - --use-current-year
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.16.8
