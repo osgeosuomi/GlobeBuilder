@@ -16,9 +16,19 @@
 #  You should have received a copy of the GNU General Public License
 #  along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
 
-from qgis_plugin_tools.tools.resources import slug_name
+import configparser
+from pathlib import Path
+
+import globe_builder
+from globe_builder.core.globe import LOGGER
 
 
-def test_meta():
-    tt = slug_name()
-    assert tt == 'GlobeBuilder'
+def test_metadata():
+    metadata = configparser.ConfigParser()
+    metadata.read(Path(globe_builder.__file__).parent / "metadata.txt")
+    assert metadata["general"]["name"] == "Globe Builder"
+    assert metadata["general"]["repository"].endswith("/GlobeBuilder")
+
+
+def test_plugin_name_is_resolved_from_metadata():
+    assert LOGGER.name == "GlobeBuilder"

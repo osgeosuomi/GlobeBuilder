@@ -126,6 +126,9 @@ max-line-length = 88
 spellcheck-targets = "names"
 dictionaries = "en_US,python,technical"
 select = ["SC", "QGS"]
+extend-ignore = [
+  "QGS202", # Experimental, matches any setColor()/setValue() call by method name
+]
 per-file-ignores = [
   "test/*:SC200,QGS",
   "test_integration/*:SC200,QGS",

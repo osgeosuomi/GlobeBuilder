@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+
 <ui version="4.0">
  <class>GlobeBuilderDockWidgetBase</class>
  <widget class="QDockWidget" name="GlobeBuilderDockWidgetBase">
@@ -381,14 +381,14 @@
                 <layout class="QVBoxLayout" name="verticalLayout_14">
                  <item>
                   <layout class="QGridLayout" name="gridLayout_2">
-                   <item row="2" column="0">
+                   <item column="0" row="2">
                     <widget class="QLabel" name="label_15">
                      <property name="text">
                       <string>  Fill</string>
                      </property>
                     </widget>
                    </item>
-                   <item row="1" column="0">
+                   <item column="0" row="1">
                     <widget class="QLabel" name="label_11">
                      <property name="font">
                       <font>
@@ -401,70 +401,70 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="3" column="0">
+                   <item column="0" row="3">
                     <widget class="QLabel" name="label_17">
                      <property name="text">
                       <string>  Line</string>
                      </property>
                     </widget>
                    </item>
-                   <item row="0" column="0">
+                   <item column="0" row="0">
                     <widget class="QLabel" name="label_6">
                      <property name="text">
                       <string>Background</string>
                      </property>
                     </widget>
                    </item>
-                   <item row="0" column="1">
+                   <item column="1" row="0">
                     <widget class="QgsColorButton" name="mColorButtonBackground">
                      <property name="allowOpacity">
                       <bool>true</bool>
                      </property>
                     </widget>
                    </item>
-                   <item row="6" column="0">
+                   <item column="0" row="6">
                     <widget class="QLabel" name="label_12">
                      <property name="text">
                       <string>  Graticules</string>
                      </property>
                     </widget>
                    </item>
-                   <item row="6" column="1">
+                   <item column="1" row="6">
                     <widget class="QgsColorButton" name="mColorButtonGraticules">
                      <property name="allowOpacity">
                       <bool>true</bool>
                      </property>
                     </widget>
                    </item>
-                   <item row="5" column="0">
+                   <item column="0" row="5">
                     <widget class="QLabel" name="label_7">
                      <property name="text">
                       <string>  Countries</string>
                      </property>
                     </widget>
                    </item>
-                   <item row="5" column="1">
+                   <item column="1" row="5">
                     <widget class="QgsColorButton" name="mColorButtonCountries">
                      <property name="allowOpacity">
                       <bool>true</bool>
                      </property>
                     </widget>
                    </item>
-                   <item row="4" column="0">
+                   <item column="0" row="4">
                     <widget class="QLabel" name="label_18">
                      <property name="text">
                       <string>Optional visualizations</string>
                      </property>
                     </widget>
                    </item>
-                   <item row="3" column="1">
+                   <item column="1" row="3">
                     <widget class="QgsColorButton" name="mColorButtonHalo">
                      <property name="allowOpacity">
                       <bool>true</bool>
                      </property>
                     </widget>
                    </item>
-                   <item row="2" column="1">
+                   <item column="1" row="2">
                     <widget class="QgsColorButton" name="mColorButtonHFill"/>
                    </item>
                   </layout>
@@ -604,14 +604,14 @@
              </item>
              <item>
               <layout class="QGridLayout" name="gridLayout">
-               <item row="0" column="0">
+               <item column="0" row="0">
                 <widget class="QLabel" name="label">
                  <property name="text">
                   <string>Globe Layout background</string>
                  </property>
                 </widget>
                </item>
-               <item row="0" column="1">
+               <item column="1" row="0">
                 <widget class="QgsColorButton" name="mColorButtonLayoutBackground">
                  <property name="minimumSize">
                   <size>
@@ -766,25 +766,25 @@
          <item>
           <widget class="QLabel" name="label_5">
            <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Please,
-             note that the plugin utilizes the &lt;/span&gt;&lt;a href=&quot;https://wiki.openstreetmap.org/wiki/Nominatim&quot;&gt;&lt;span
-             style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;OpenStreetMap Nominatim&lt;/span&gt;&lt;/a&gt;&lt;span
-             style=&quot; font-size:10pt;&quot;&gt; geocoding API. Please, &lt;/span&gt;&lt;span style=&quot;
-             font-size:10pt; font-weight:600;&quot;&gt;use maximum of 1 geocoding request per second&lt;/span&gt;&lt;span
-             style=&quot; font-size:10pt;&quot;&gt;. The OpenStreetMap data is licensed under &lt;/span&gt;&lt;a href=&quot;https://opendatacommons.org/licenses/odbl/&quot;&gt;&lt;span
-             style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;ODbL license&lt;/span&gt;&lt;/a&gt;&lt;span
-             style=&quot; font-size:10pt;&quot;&gt;. Made with Natural Earth. Free vectior and raster map data @ &lt;/span&gt;&lt;a
-             href=&quot;naturalearthdata.com&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline;
-             color:#0000ff;&quot;&gt;naturalearthdata.com&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;.
-             Sentinel-2 cloudless data- &lt;/span&gt;&lt;a href=&quot;https://s2maps.eu/&quot;&gt;&lt;span style=&quot;
-             font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://s2maps.eu&lt;/span&gt;&lt;/a&gt;&lt;span
-             style=&quot; font-size:10pt;&quot;&gt; by EOX IT Services GmbH (Contains modified Copernicus Sentinel data
-             2017 &amp;amp; 2018) released under &lt;/span&gt;&lt;a href=&quot;https://creativecommons.org/licenses/by-nc-sa/4.0/&quot;&gt;&lt;span
-             style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;Creative Commons
-             Attribution-NonCommercial-ShareAlike 4.0 International License&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot;
-             font-size:10pt;&quot;&gt;. For commercial usage of Sentinel-2 cloudless please see &lt;/span&gt;&lt;a href=&quot;https://cloudless.eox.at&quot;&gt;&lt;span
-             style=&quot; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://cloudless.eox.at&lt;/span&gt;&lt;/a&gt;&lt;span
-             style=&quot; font-size:10pt;&quot;&gt;. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:10pt;"&gt;Please,
+             note that the plugin utilizes the &lt;/span&gt;&lt;a href="https://wiki.openstreetmap.org/wiki/Nominatim"&gt;&lt;span
+             style=" font-size:10pt; text-decoration: underline; color:#0000ff;"&gt;OpenStreetMap Nominatim&lt;/span&gt;&lt;/a&gt;&lt;span
+             style=" font-size:10pt;"&gt; geocoding API. Please, &lt;/span&gt;&lt;span style="
+             font-size:10pt; font-weight:600;"&gt;use maximum of 1 geocoding request per second&lt;/span&gt;&lt;span
+             style=" font-size:10pt;"&gt;. The OpenStreetMap data is licensed under &lt;/span&gt;&lt;a href="https://opendatacommons.org/licenses/odbl/"&gt;&lt;span
+             style=" font-size:10pt; text-decoration: underline; color:#0000ff;"&gt;ODbL license&lt;/span&gt;&lt;/a&gt;&lt;span
+             style=" font-size:10pt;"&gt;. Made with Natural Earth. Free vectior and raster map data @ &lt;/span&gt;&lt;a
+             href="naturalearthdata.com"&gt;&lt;span style=" font-size:10pt; text-decoration: underline;
+             color:#0000ff;"&gt;naturalearthdata.com&lt;/span&gt;&lt;/a&gt;&lt;span style=" font-size:10pt;"&gt;.
+             Sentinel-2 cloudless data- &lt;/span&gt;&lt;a href="https://s2maps.eu/"&gt;&lt;span style="
+             font-size:10pt; text-decoration: underline; color:#0000ff;"&gt;https://s2maps.eu&lt;/span&gt;&lt;/a&gt;&lt;span
+             style=" font-size:10pt;"&gt; by EOX IT Services GmbH (Contains modified Copernicus Sentinel data
+             2017 &amp;amp; 2018) released under &lt;/span&gt;&lt;a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"&gt;&lt;span
+             style=" font-size:10pt; text-decoration: underline; color:#0000ff;"&gt;Creative Commons
+             Attribution-NonCommercial-ShareAlike 4.0 International License&lt;/span&gt;&lt;/a&gt;&lt;span style="
+             font-size:10pt;"&gt;. For commercial usage of Sentinel-2 cloudless please see &lt;/span&gt;&lt;a href="https://cloudless.eox.at"&gt;&lt;span
+             style=" font-size:10pt; text-decoration: underline; color:#0000ff;"&gt;https://cloudless.eox.at&lt;/span&gt;&lt;/a&gt;&lt;span
+             style=" font-size:10pt;"&gt;. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
             </string>
            </property>
            <property name="wordWrap">

@@ -16,72 +16,119 @@
 #  You should have received a copy of the GNU General Public License
 #  along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
 
-from qgis.core import (QgsFillSymbol, QgsEffectStack, QgsDropShadowEffect, QgsInnerShadowEffect,
-                       QgsGeometryGeneratorSymbolLayer, QgsVectorLayer, QgsFeature, QgsGeometry, QgsPointXY,
-                       QgsCoordinateTransform, QgsProject)
-from qgis.gui import QgisInterface
+import typing
 
-from globe_builder.definitions.projections import Projections
-from globe_builder.definitions.settings import (TRANSPARENT_COLOR, HaloDrawMethod, EARTH_RADIUS, DEFAULT_HALO_DRAW_METHOD,
-                                    DEFAULT_NUMBER_OF_SEGMENTS, WGS84)
+from qgis.core import (
+    QgsCoordinateTransform,
+    QgsDropShadowEffect,
+    QgsEffectStack,
+    QgsFeature,
+    QgsFillSymbol,
+    QgsGeometry,
+    QgsGeometryGeneratorSymbolLayer,
+    QgsInnerShadowEffect,
+    QgsPointXY,
+    QgsProject,
+    QgsVectorLayer,
+)
+from qgis.utils import iface as utils_iface
 from qgis_plugin_tools.tools.i18n import tr
 from qgis_plugin_tools.tools.settings import get_setting
 
+from globe_builder.definitions.projections import Projections
+from globe_builder.definitions.settings import (
+    DEFAULT_HALO_DRAW_METHOD,
+    DEFAULT_NUMBER_OF_SEGMENTS,
+    EARTH_RADIUS,
+    TRANSPARENT_COLOR,
+    WGS84,
+    HaloDrawMethod,
+)
+
+if typing.TYPE_CHECKING:
+    from qgis.core import QgsCoordinateReferenceSystem
+    from qgis.gui import QgisInterface
+    from qgis.PyQt.QtGui import QColor
+
+    from globe_builder.definitions.settings import Origin
+
+iface = typing.cast("QgisInterface", utils_iface)
+
 
 class Halo:
-    LAYER_NAME = tr('Halo')
+    """Creates a halo layer around the globe."""
 
-    def __init__(self, iface: QgisInterface, origin, projection) -> None:
-        self.iface = iface
+    LAYER_NAME = tr("Halo")
+
+    def __init__(self, origin: "Origin", projection: Projections) -> None:
         self.origin = origin
         self.projection = projection
 
-    def create_halo_layer(self, use_effects, stroke_color, fill_color=None):
-        # noinspection PyArgumentList
-        qgis_instance: QgsProject = QgsProject.instance()
+    def create_halo_layer(
+        self,
+        stroke_color: "QColor",
+        fill_color: "QColor | None" = None,
+        *,
+        use_effects: bool,
+    ) -> tuple[QgsVectorLayer, int]:
+        """Create a styled halo layer.
 
+        Returns the layer and the index it should be inserted at in the group.
+        """
         draw_method = HaloDrawMethod(
-            get_setting("haloDrawMethod", DEFAULT_HALO_DRAW_METHOD.value, str))
+            get_setting("haloDrawMethod", DEFAULT_HALO_DRAW_METHOD.value, str)
+        )
         proj_string = self.projection.value.proj_str(self.origin)
         # Block signals required to prevent the pop up asking about the crs change
-        self.iface.mainWindow().blockSignals(True)
+        iface.mainWindow().blockSignals(True)  # noqa: FBT003
         layer = QgsVectorLayer(draw_method.value, self.LAYER_NAME, "memory")
         crs = layer.crs()
-        crs.createFromProj(proj_string)
+        if not crs.createFromProj(proj_string):
+            msg = tr("Invalid projection string: {}", proj_string)
+            raise ValueError(msg)
         layer.setCrs(crs)
-        self.iface.mainWindow().blockSignals(False)
+        iface.mainWindow().blockSignals(False)  # noqa: FBT003
 
         feature = QgsFeature()
         if self.projection == Projections.AZIMUTHAL_ORTHOGRAPHIC:
             # noinspection PyArgumentList
-            geom = QgsGeometry.fromPointXY(QgsPointXY(self.origin['lat'], self.origin['lon']))
+            geom = QgsGeometry.fromPointXY(
+                QgsPointXY(self.origin["lat"], self.origin["lon"])
+            )
             if draw_method == HaloDrawMethod.buffered_point:
                 geom = geom.buffer(EARTH_RADIUS, DEFAULT_NUMBER_OF_SEGMENTS)
         else:
             geom = self.create_grid_halo(layer.crs())
 
         feature.setGeometry(geom)
-        provider = layer.dataProvider()
-        layer.startEditing()
-        provider.addFeatures([feature])
-        layer.commitChanges()
+        success, _ = layer.dataProvider().addFeatures([feature])
+        if not success:
+            msg = tr("Could not add halo feature to the layer")
+            raise ValueError(msg)
 
-        # Assign styles and to map (but not toc yet)
-        self.set_halo_styles(layer, draw_method, stroke_color, use_effects, fill_color)
-        qgis_instance.addMapLayer(layer, False)
+        self.set_halo_styles(
+            layer, draw_method, stroke_color, fill_color, use_effects=use_effects
+        )
 
         index = 0 if use_effects else -1
         return layer, index
 
     # noinspection PyCallByClass
     @staticmethod
-    def set_halo_styles(layer, draw_method, stroke_color, use_effects, fill_color=None):
+    def set_halo_styles(
+        layer: QgsVectorLayer,
+        draw_method: HaloDrawMethod,
+        stroke_color: "QColor",
+        fill_color: "QColor | None" = None,
+        *,
+        use_effects: bool,
+    ) -> QgsVectorLayer:
+        """Style the halo layer with the given colors and optional shadow effects."""
         renderer = layer.renderer()
-        sym = renderer.symbol()
+        symbol = renderer.symbol()
 
-        props = {'color': 'blue'}
         # noinspection PyArgumentList
-        fill_symbol = QgsFillSymbol.createSimple(props)
+        fill_symbol = QgsFillSymbol.createSimple({"color": "blue"})
         fill_symbol_layer = fill_symbol.symbolLayers()[0]
         fill_symbol_layer.setStrokeColor(stroke_color)
         if fill_color is not None:
@@ -92,12 +139,12 @@ class Halo:
         if use_effects:
             # Assign effects
             effect_stack = QgsEffectStack()
-            drop_shdw = QgsDropShadowEffect()
-            drop_shdw.setColor(stroke_color)
-            inner_shdw = QgsInnerShadowEffect()
-            inner_shdw.setColor(stroke_color)
-            effect_stack.appendEffect(drop_shdw)
-            effect_stack.appendEffect(inner_shdw)
+            drop_shadow = QgsDropShadowEffect()
+            drop_shadow.setColor(stroke_color)
+            inner_shadow = QgsInnerShadowEffect()
+            inner_shadow.setColor(stroke_color)
+            effect_stack.appendEffect(drop_shadow)
+            effect_stack.appendEffect(inner_shadow)
 
             fill_symbol_layer.setPaintEffect(effect_stack)
         # noinspection PyArgumentList
@@ -105,37 +152,40 @@ class Halo:
             renderer.setSymbol(fill_symbol)
         else:
             # noinspection PyCallByClass, PyArgumentList
-            geom_generator_sl = QgsGeometryGeneratorSymbolLayer.create({
-                'SymbolType': 'Fill',
-                'geometryModifier': 'buffer($geometry, {:d})'.format(EARTH_RADIUS)
-            })
-            geom_generator_sl.setSubSymbol(fill_symbol)
-            sym.changeSymbolLayer(0, geom_generator_sl)
+            geom_generator_symbol_layer = QgsGeometryGeneratorSymbolLayer.create(
+                {
+                    "SymbolType": "Fill",
+                    "geometryModifier": f"buffer($geometry, {EARTH_RADIUS:d})",
+                }
+            )
+            geom_generator_symbol_layer.setSubSymbol(fill_symbol)
+            symbol.changeSymbolLayer(0, geom_generator_symbol_layer)
 
         layer.triggerRepaint()
         return layer
 
     @staticmethod
-    def create_grid_halo(crs):
+    def create_grid_halo(crs: "QgsCoordinateReferenceSystem") -> QgsGeometry:
+        """Create a polygon covering the whole world in the given CRS."""
         min_x = -180
         min_y = -90
         max_x = 180
         max_y = 90
         step = 2
-        coords = []
-        for y in range(min_y, max_y + step, step):
-            coords.append((min_x, y))
-        for x in range(min_x + step, max_x + step, step):
-            coords.append((x, max_y))
-        for y in reversed(range(min_y, max_y + step, step)):
-            coords.append((max_x, y))
-        for x in reversed(range(min_x + step, max_x + step, step)):
-            coords.append((x, min_y))
+        coords: list[tuple[int, int]] = []
+        coords.extend((min_x, y) for y in range(min_y, max_y + step, step))
+        coords.extend((x, max_y) for x in range(min_x + step, max_x + step, step))
+        coords.extend((max_x, y) for y in reversed(range(min_y, max_y + step, step)))
+        coords.extend(
+            (x, min_y) for x in reversed(range(min_x + step, max_x + step, step))
+        )
         coords.append(coords[0])
         # noinspection PyCallByClass,PyArgumentList
-        geom = QgsGeometry.fromPolygonXY([[QgsPointXY(pair[0], pair[1]) for pair in coords]]).asQPolygonF()
+        polygon = QgsGeometry.fromPolygonXY(
+            [[QgsPointXY(pair[0], pair[1]) for pair in coords]]
+        ).asQPolygonF()
         # noinspection PyArgumentList
         transformer = QgsCoordinateTransform(WGS84, crs, QgsProject.instance())
-        transformer.transformPolygon(geom)
+        transformer.transformPolygon(polygon)
         # noinspection PyArgumentList
-        return QgsGeometry.fromQPolygonF(geom)
+        return QgsGeometry.fromQPolygonF(polygon)
