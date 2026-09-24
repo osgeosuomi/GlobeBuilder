@@ -9,7 +9,6 @@ version = "0.0.0.post0"
 description = "QGIS plugin for adding globe visualization to the current map or layout."
 readme = "README.md"
 dependencies = ["qgis_plugin_tools"]
-build = ["uv"]
 
 [project.entry-points."qgis_plugin_dev_tools"]
 globe_builder = "globe_builder"
@@ -40,9 +39,10 @@ default-groups = ["dev", "lint"]
 [dependency-groups]
 dev = [
   # Debugging
-  "debugpy==1.5.1",
+  "debugpy>=1.8.22",
   # Testing
   "pytest>=9.1.1",
+  "pytest-cov",
   "pytest-qt",
   "pytest-qgis",
   "pytest-mock",
@@ -52,15 +52,15 @@ dev = [
 ]
 lint = [
   # Linting and formatting (ensure precommit yaml has same versions)
-  "prek>=0.5.1",
-  "ruff>=0.16.8",
-  "mypy>=2",
-  "flake8>=7.3.0",
-  "bandit>=1.9.4",
+  "prek>=0.5.3",
+  "ruff==0.16.8",
+  "mypy==2.3.1",
+  "flake8==7.4.1",
+  "bandit==1.9.4",
   # flake8 plugins
-  "flake8-qgis>=2.1.0",
-  "flake8-pyproject>=1.2.4",
-  "flake8-spellcheck>=0.28.0",
+  "flake8-qgis==2.1.0",
+  "flake8-pyproject==1.2.4",
+  "flake8-spellcheck==0.28.0",
   # Stubs for type checks
   "PyQt6-stubs==20250824",
 ]
@@ -143,3 +143,23 @@ python_version = "3.12"
 follow_imports = "normal"
 show_column_numbers = true
 check_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["test"]
+addopts = [
+  # "--qgis_disable_gui" # Runs QGIS tests without GUI
+]
+
+[tool.coverage.paths]
+source = ["src", "**/site-packages"]
+
+[tool.coverage.run]
+branch = true
+source_pkgs = ["globe_builder"]
+
+[tool.coverage.report]
+exclude_also = [
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+  "raise NotImplementedError",
+]

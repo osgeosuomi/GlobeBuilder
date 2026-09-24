@@ -1,13 +1,24 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: v0.3.1
+_commit: v0.5.0
 _src_path: https://github.com/osgeosuomi/qgis-plugin-copier-template.git
-github_workflows: true
+add_github_workflows: true
 insert_copyright_header: true
+is_monorepo_component: false
 lang_key_for_translations: fi
+min_code_coverage: 60
 plugin_metadata_author: Gispo Ltd
 plugin_metadata_email: code@osgeo.fi
 plugin_metadata_repository_url: https://github.com/osgeosuomi/GlobeBuilder
-python_version: '3.12'
+qgis_plugin_about: This plugin builds a globe from Natural Earth countries GeoJSON
+    and an Azimuthal orthographic projection ("world from space") projection described
+    in http://www.statsmapsnpix.com/2019/09/globe-projections-and-insets-in-qgis.html.
+    This plugin uses OpenStreetMap Nominatim geocoding API. The OpenStreetMap data
+    is licensed under ODbL license. Made with Natural Earth. Free vector and raster
+    map data . This plugin lists Sentinel-2 cloudless as an optional data source.
+    Sentinel-2 cloudless data by EOX IT Services GmbH (Contains modified Copernicus
+    Sentinel data 2017 & 2018) released under Creative Commons Attribution-NonCommercial-ShareAlike
+    4.0 International License. For commercial usage of Sentinel-2 cloudless please
+    see.
 qgis_plugin_class: Plugin
 qgis_plugin_description: QGIS plugin that is meant for adding globe visualization
     to the current map
