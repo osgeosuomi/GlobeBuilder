@@ -4,8 +4,18 @@ on:
   release:
     types: released
 
+permissions:
+  contents: read
+
 jobs:
+  style:
+    uses: ./.github/workflows/code-style.yml
+
+  test:
+    uses: ./.github/workflows/tests.yml
+
   publish:
+    needs: [style, test]
     name: Publish plugin to QGIS plugin repository
     runs-on: ubuntu-latest
     container:
@@ -24,7 +34,7 @@ jobs:
       - name: Build QGIS Plugin
         run: |
           rm -rf dist
-          uv sync --no-editable
+          uv sync --no-editable --locked
           uv run --no-editable qgis-plugin-dev-tools build
 
       - name: Scan the plugin build

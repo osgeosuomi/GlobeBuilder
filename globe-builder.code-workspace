@@ -44,5 +44,18 @@
         "editor.codeActionsOnSave": {
             "source.fixAll.markdownlint": "explicit"
         }
+    },
+    "launch": {
+        "configurations": [
+            {
+                "name": "QGIS debugpy",
+                "type": "debugpy",
+                "request": "attach",
+                "connect": {
+                    "host": "localhost",
+                    "port": 5678
+                }
+            }
+        ],
     }
 }

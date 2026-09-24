@@ -8,7 +8,7 @@ default_language_version:
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # frozen: v6.0.0
     hooks:
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
@@ -38,15 +38,16 @@ repos:
     hooks:
       - id: markdownlint
         files: \.md$
+        exclude: CHANGELOG\.md
         args: [ "--fix" ]
 
   - repo: https://github.com/Mateusz-Grzelinski/actionlint-py
-    rev: 2f3dbd354aa118b539dee99d8eed05a83097a199  # frozen: v1.7.12.24
+    rev: 805f85e558841bf4d852335e036b33d2b26be1cc  # frozen: v1.7.12.25
     hooks:
       - id: actionlint
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.5.6
+    rev: ad1b27d73581aa16cca06fc4a0761fc563ffe8e8  # frozen: v1.5.6
     hooks:
       - id: insert-license  # Insert a short license disclaimer as a header comment in source files
         files: \.py$
@@ -56,14 +57,14 @@ repos:
           - --use-current-year
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.8
+    rev: 2eeb5678de71a00c0902cbda7105d328432f72cb  # frozen: v0.16.8
     hooks:
       - id: ruff-check
         args: [ --fix, --exit-non-zero-on-fix, --extend-fixable=F401 ]
       - id: ruff-format
 
   - repo: https://github.com/PyCQA/flake8
-    rev: 7.3.0
+    rev: 7eccf20b526fe4f2230bf9afeeef2fc9f97faf8d  # frozen: 7.4.1
     hooks:
       - id: flake8
         additional_dependencies:
@@ -72,20 +73,20 @@ repos:
           - flake8-qgis==2.1.0
 
   - repo: https://github.com/PyCQA/bandit
-    rev: 1.9.4
+    rev: 92ae8b82fb422a639f0ed8d99e96cea769594e08  # frozen: 1.9.4
     hooks:
       - id: bandit
         args: [ "-c", "pyproject.toml" ]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev:  v2.3.1
+    rev: 7ff8d35ae36a7d2b968f2f90b4c723e292e594ee  # frozen: v2.3.1
     hooks:
       - id: mypy
         additional_dependencies:
           - PyQt6-stubs==20250824
 
   - repo: https://github.com/nlsfi/qgis-plugin-dev-tools
-    rev: v0.13.1
+    rev: 63bdbc10847a21c1e759bb8b3084a71ba7e35ed9  # frozen: v0.13.1
     hooks:
       - id: update-translations
       - id: normalize-xml
@@ -93,7 +94,7 @@ repos:
   # commit-msg hooks
   # Commit messages should follow [Conventional Commits notation](https://www.conventionalcommits.org/en/v1.0.0/#summary).
   - repo: https://github.com/jorisroovers/gitlint
-    rev: v0.19.1
+    rev: acc9d9de6369b76d22cb4167029d2035e8730b98  # frozen: v0.19.1
     hooks:
       - id: gitlint
         stages: [ commit-msg ]
