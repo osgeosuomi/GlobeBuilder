@@ -47,7 +47,7 @@ dev = [
   "pytest-qgis",
   "pytest-mock",
   # Tools
-  "qgis-plugin-dev-tools>=0.13.0",
+  "qgis-plugin-dev-tools>=0.13.2",
   "copier",
 ]
 lint = [
