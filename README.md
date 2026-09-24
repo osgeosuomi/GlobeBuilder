@@ -56,7 +56,9 @@ Refer to [development instructions](DEVELOPMENT.md).
 ## Licence
 
 This plugin is licenced with
-[GNU General Public License, version 2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html).
+[GNU General Public License, version 2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
+or (at your option) any later version.
+
 This plugin uses
 [OpenStreetMap Nominatim](https://wiki.openstreetmap.org/wiki/Nominatim) geocoding API.
 The OpenStreetMap data is licensed under

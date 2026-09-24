@@ -26,6 +26,10 @@ repos:
       - id: check-added-large-files
       - id: check-merge-conflict
         args: [--assume-in-merge]
+      - id: file-contents-sorter
+        name: Sort and deduplicate spellcheck whitelist
+        files: (^|/)whitelist\.txt$
+        args: [--unique]
 
   # TOML files
   - repo: https://github.com/ComPWA/taplo-pre-commit
@@ -86,7 +90,7 @@ repos:
           - PyQt6-stubs==20250824
 
   - repo: https://github.com/nlsfi/qgis-plugin-dev-tools
-    rev: 63bdbc10847a21c1e759bb8b3084a71ba7e35ed9  # frozen: v0.13.1
+    rev: 5bedbcb39455262e5e1aed1e5ca5e9f14928799f  # frozen: v0.13.2
     hooks:
       - id: update-translations
       - id: normalize-xml
