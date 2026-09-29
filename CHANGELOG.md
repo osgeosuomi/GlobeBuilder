@@ -3,6 +3,8 @@
 ## Unreleased
 
 * Add QGS 4 support
+* Adopt qgis-plugin-copier-template
+* Use correct nominatim url
 
 ## 0.6.0 - 2020-09-23
 
