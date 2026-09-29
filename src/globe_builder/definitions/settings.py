@@ -78,7 +78,7 @@ TRANSPARENT_COLOR = _transparent
 
 # UI
 NOMINATIM_URL = (
-    "https://nominatim.openstreetmap.org/search/{query}?limit={limit}&format=geojson"
+    "https://nominatim.openstreetmap.org/search?q={query}&limit={limit}&format=geojson"
 )
 DEFAULT_MAX_NUMBER_OF_RESULTS = 5
 MAX_NAME_PARTS = 3
