@@ -160,10 +160,6 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):  # type: ignore
         self.mColorButtonIntCountries.setColor(DEFAULT_INTERSECTING_COUNTRIES_COLOR)
 
         self.geolocations: Geolocations = {}
-        self.old_coordinates: Origin | None = DEFAULT_ORIGIN
-        self.old_projection = Projections.proj_from_id(
-            self.comboBoxProjections.currentText()
-        )
 
         # connections
         self.radioButtonCoordinates.toggled.connect(self._on_coordinates_toggled)
@@ -237,15 +233,8 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):  # type: ignore
             self.geocoder.geocode(text, self.spinBoxMaxResults.value())
 
     def _on_apply_visualizations_clicked(self) -> None:
-        coordinates = self._calculate_origin_coordinates()
-        if coordinates != self.old_coordinates:
-            self.old_coordinates = coordinates
-            self.globe.set_origin(coordinates)
-        projection = Projections.proj_from_id(self.comboBoxProjections.currentText())
-        if projection is not None and projection != self.old_projection:
-            self.old_projection = projection
-            self.globe.set_projection(projection)
-            self.globe.change_project_projection()
+        self._set_origin_and_projection()
+        self.globe.change_project_projection()
         self._load_data_to_globe()
         self.globe.change_background_color(self.mColorButtonBackground.color())
         self.mColorButtonBackground.setColor(iface.mapCanvas().canvasColor())
@@ -254,18 +243,18 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):  # type: ignore
 
     def _on_run_clicked(self) -> None:
         self._load_data_to_globe(possibly_use_intersecting_colors=False)
-        self.old_coordinates = self._calculate_origin_coordinates()
-        self.globe.set_origin(self.old_coordinates)
-        self.old_projection = Projections.proj_from_id(
-            self.comboBoxProjections.currentText()
-        )
-        if self.old_projection is not None:
-            self.globe.set_projection(self.old_projection)
+        self._set_origin_and_projection()
         self.globe.change_background_color(self.mColorButtonBackground.color())
         self.mColorButtonBackground.setColor(iface.mapCanvas().canvasColor())
         self.globe.change_project_projection()
         self.globe.set_group_visibility(is_visible=True)
         self._add_halo_to_globe()
+
+    def _set_origin_and_projection(self) -> None:
+        self.globe.set_origin(self._calculate_origin_coordinates())
+        projection = Projections.proj_from_id(self.comboBoxProjections.currentText())
+        if projection is not None:
+            self.globe.set_projection(projection)
 
     def _on_add_to_layout_clicked(self) -> None:
         selected_layouts = [

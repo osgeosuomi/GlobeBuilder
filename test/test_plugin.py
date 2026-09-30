@@ -19,8 +19,11 @@
 from typing import TYPE_CHECKING
 
 import pytest
+from qgis.core import QgsProject
 
 from globe_builder import classFactory
+from globe_builder.definitions.projections import Projections
+from globe_builder.definitions.settings import DEFAULT_ORIGIN
 from globe_builder.ui.globe_builder_dockwidget import GlobeBuilderDockWidget
 
 if TYPE_CHECKING:
@@ -55,3 +58,12 @@ def test_plugin_run_shows_dockwidget(plugin_loaded: "Plugin") -> None:
     plugin_loaded.dockwidget.close()
 
     assert not plugin_loaded.plugin_is_active
+
+
+def test_apply_changes_project_crs(qgis_iface: "QgisInterface") -> None:
+    dockwidget = GlobeBuilderDockWidget()
+
+    dockwidget.pushButtonApplyVisualizations.click()
+
+    expected_proj = Projections.AZIMUTHAL_ORTHOGRAPHIC.value.proj_str(DEFAULT_ORIGIN)
+    assert QgsProject.instance().crs().toProj() == expected_proj
