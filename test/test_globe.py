@@ -24,6 +24,7 @@ from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtGui import QColor
 
 from globe_builder.core.globe import Globe
+from globe_builder.core.halo import Halo
 from globe_builder.definitions.projections import Projections
 from globe_builder.definitions.settings import DEFAULT_ORIGIN
 
@@ -131,6 +132,15 @@ def test_adding_halo(
     globe.add_halo(QColor(Qt.GlobalColor.blue), use_effects=True)
     names = get_existing_layer_names(qgis_iface, qgis_canvas)
     assert "Halo" in names
+
+
+def test_ortho_halo_is_centered(globe: Globe):
+    globe.set_origin({"lat": 60, "lon": 25})
+    layer, _ = Halo(globe.origin, globe.projection).create_halo_layer(
+        QColor(Qt.GlobalColor.blue), use_effects=False
+    )
+    center = next(layer.getFeatures()).geometry().centroid().asPoint()
+    assert (round(center.x()), round(center.y())) == (0, 0)
 
 
 def test_group(globe: Globe):

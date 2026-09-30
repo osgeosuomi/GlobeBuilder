@@ -92,9 +92,7 @@ class Halo:
         feature = QgsFeature()
         if self.projection == Projections.AZIMUTHAL_ORTHOGRAPHIC:
             # noinspection PyArgumentList
-            geom = QgsGeometry.fromPointXY(
-                QgsPointXY(self.origin["lat"], self.origin["lon"])
-            )
+            geom = QgsGeometry.fromPointXY(QgsPointXY(0, 0))
             if draw_method == HaloDrawMethod.buffered_point:
                 geom = geom.buffer(EARTH_RADIUS, DEFAULT_NUMBER_OF_SEGMENTS)
         else:
