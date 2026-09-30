@@ -31,6 +31,8 @@ from qgis.core import (
     QgsProject,
     QgsRasterLayer,
     QgsRectangle,
+    QgsSingleSymbolRenderer,
+    QgsSymbol,
     QgsVectorLayer,
 )
 from qgis.PyQt.QtGui import QColor
@@ -153,7 +155,9 @@ class Globe:
 
             def style_countries(layer: QgsVectorLayer) -> None:
                 if intersecting_countries_color is None:
-                    layer.renderer().symbol().setColor(countries_color)
+                    symbol = QgsSymbol.defaultSymbol(layer.geometryType())
+                    symbol.setColor(countries_color)
+                    layer.setRenderer(QgsSingleSymbolRenderer(symbol))
                 else:
                     set_selection_based_style(
                         layer, intersecting_countries_color, countries_color
