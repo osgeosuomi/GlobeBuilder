@@ -5,7 +5,7 @@ build-backend = "uv_build"
 [project]
 name = "globebuilder"
 requires-python = ">=3.12"
-version = "0.0.0.post0"
+version = "0.7.0.post0"
 description = "QGIS plugin for adding globe visualization to the current map or layout."
 readme = "README.md"
 dependencies = ["qgis_plugin_tools"]
