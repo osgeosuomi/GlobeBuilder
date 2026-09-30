@@ -39,6 +39,7 @@ def load_data(
     load_s2: bool = False,
     load_countries: bool = False,
     load_graticules: bool = False,
+    intersecting_countries_color: QColor | None = None,
 ) -> None:
     globe.load_data(
         load_s2=load_s2,
@@ -46,7 +47,7 @@ def load_data(
         load_graticules=load_graticules,
         countries_color=QColor(Qt.GlobalColor.blue),
         graticules_color=QColor(Qt.GlobalColor.blue),
-        intersecting_countries_color=None,
+        intersecting_countries_color=intersecting_countries_color,
         countries_resolution="50m",
         graticules_resolution=10,
     )
@@ -76,6 +77,17 @@ def test_loading_countries(
     load_data(globe, load_countries=True)
     names = get_existing_layer_names(qgis_iface, qgis_canvas)
     assert "Countries" in names
+
+
+def test_reloading_countries_after_intersecting_style(globe: Globe):
+    load_data(
+        globe,
+        load_countries=True,
+        intersecting_countries_color=QColor(Qt.GlobalColor.red),
+    )
+    load_data(globe, load_countries=True)
+    layer = QgsProject.instance().mapLayersByName("Countries")[0]
+    assert layer.renderer().symbol().color() == QColor(Qt.GlobalColor.blue)
 
 
 @pytest.mark.skip("TODO: figure way to test processing")
