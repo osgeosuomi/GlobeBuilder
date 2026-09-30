@@ -34,7 +34,7 @@
 # You should have received a copy of the GNU General Public License
 # along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
 
-#  Copyright (C) 2020-2026 GlobeBuilder contributors.
+#  Copyright (C) 2026 GlobeBuilder contributors.
 #
 #
 #  This file is part of GlobeBuilder.
@@ -52,41 +52,19 @@
 #  You should have received a copy of the GNU General Public License
 #  along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
 
-from typing import TYPE_CHECKING
-
-import pytest
-from qgis.core import QgsProject
-
-if TYPE_CHECKING:
-    from GlobeBuilder.core.globe import Globe
-
-"""
-!!! IMPORTANT !!!
-DO NOT import anything that imports qgis.utils.iface
-(or some module that imports other module that imports it) in conftest root!
-Importing those modules in fixtures is OK.
-
-The same goes with GlobeBuilder.env.py.
-"""
+from qgis.PyQt import QtCore
+from qgis_plugin_tools.tools import i18n
 
 
-@pytest.fixture(autouse=True)
-def _set_env(monkeypatch: pytest.MonkeyPatch) -> None:
-    """Set environment variables for tests."""
-    monkeypatch.setenv("IS_DEVELOPMENT_MODE", "yes")
+def setup_all_translators() -> list[QtCore.QTranslator]:
+    """Initialize translators."""
+    translators = []
+    _, main_file_path = i18n.setup_translation()
+    if main_file_path:
+        main_translator = QtCore.QTranslator()
+        main_translator.load(main_file_path)
+        # noinspection PyCallByClass
+        QtCore.QCoreApplication.installTranslator(main_translator)
+        translators.append(main_translator)
 
-
-@pytest.fixture(autouse=True)
-def _reset_session_state(
-    qgis_new_project: None,
-) -> None:
-    if project_instance := QgsProject.instance():
-        project_instance.clear()
-
-
-@pytest.fixture
-def globe() -> "Globe":
-    from GlobeBuilder.core.globe import Globe  # noqa: PLC0415
-    from GlobeBuilder.definitions.projections import Projections  # noqa: PLC0415
-
-    return Globe(projection=Projections.AZIMUTHAL_ORTHOGRAPHIC)
+    return translators

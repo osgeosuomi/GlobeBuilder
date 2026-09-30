@@ -15,7 +15,7 @@ jobs:
     uses: ./.github/workflows/tests.yml
 
   publish:
-    needs: [style, test]
+    needs: [ style, test ]
     name: Publish plugin to QGIS plugin repository
     runs-on: ubuntu-latest
     container:
@@ -48,7 +48,7 @@ jobs:
       - name: Smoke test the plugin build
         run: |
           PYTHONPATH=build_scan python3 -c \
-            "from globe_builder.plugin import Plugin"
+            "from GlobeBuilder.plugin import Plugin"
 
       - name: Publish QGIS Plugin
         run: |

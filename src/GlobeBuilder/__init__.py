@@ -1,4 +1,4 @@
-#  Copyright (C) 2026 GlobeBuilder contributors.
+#  Copyright (C) 2020-2026 GlobeBuilder contributors.
 #
 #
 #  This file is part of GlobeBuilder.
@@ -16,19 +16,30 @@
 #  You should have received a copy of the GNU General Public License
 #  along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
 
-from qgis.PyQt import QtCore
-from qgis_plugin_tools.tools import i18n
+
+import typing
+
+from qgis.utils import plugins
+
+from GlobeBuilder.utils import i18n_utils
+
+if typing.TYPE_CHECKING:
+    from qgis.PyQt import QtCore
+
+    from GlobeBuilder.plugin import Plugin
+
+TRANSLATORS: "list[QtCore.QTranslator]" = []
 
 
-def setup_all_translators() -> list[QtCore.QTranslator]:
-    """Initialize translators."""
-    translators = []
-    _, main_file_path = i18n.setup_translation()
-    if main_file_path:
-        main_translator = QtCore.QTranslator()
-        main_translator.load(main_file_path)
-        # noinspection PyCallByClass
-        QtCore.QCoreApplication.installTranslator(main_translator)
-        translators.append(main_translator)
+def classFactory(_) -> "Plugin":  # noqa: ANN001, N802
+    """Class factory."""
+    TRANSLATORS.extend(i18n_utils.setup_all_translators())
 
-    return translators
+    from GlobeBuilder.plugin import Plugin  # noqa: PLC0415
+
+    return Plugin()
+
+
+def get_instance() -> "Plugin | None":
+    """Get instance."""
+    return plugins.get(__name__)

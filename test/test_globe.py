@@ -23,10 +23,10 @@ from qgis.core import Qgis, QgsProcessingException, QgsProject
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtGui import QColor
 
-from globe_builder.core.globe import Globe
-from globe_builder.core.halo import Halo
-from globe_builder.definitions.projections import Projections
-from globe_builder.definitions.settings import DEFAULT_ORIGIN
+from GlobeBuilder.core.globe import Globe
+from GlobeBuilder.core.halo import Halo
+from GlobeBuilder.definitions.projections import Projections
+from GlobeBuilder.definitions.settings import DEFAULT_ORIGIN
 
 if TYPE_CHECKING:
     from pytest_qgis import QgisInterface

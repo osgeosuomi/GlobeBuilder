@@ -1,5 +1,5 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: v0.6.1
+_commit: v0.6.3
 _src_path: https://github.com/osgeosuomi/qgis-plugin-copier-template.git
 add_github_workflows: true
 insert_copyright_header: true
@@ -22,7 +22,7 @@ qgis_plugin_about: This plugin builds a globe from Natural Earth countries GeoJS
 qgis_plugin_class: Plugin
 qgis_plugin_description: QGIS plugin that is meant for adding globe visualization
     to the current map
-qgis_plugin_module: globe_builder
+qgis_plugin_module: GlobeBuilder
 qgis_plugin_name: GlobeBuilder
 qgis_version: QGIS3 & QGIS4
 setup_translations: true

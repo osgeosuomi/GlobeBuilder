@@ -4,68 +4,55 @@
 <context>
     <name>Globe</name>
     <message>
-        <location filename="../../core/globe.py" line="64" />
-        <location filename="../../core/globe.py" line="63" />
+        <location filename="../../core/globe.py" line="121" />
+        <location filename="../../core/globe.py" line="120" />
         <source>Globe</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../../core/globe.py" line="122" />
+        <location filename="../../core/globe.py" line="181" />
         <source>S2 Cloudless 2018</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../../core/globe.py" line="131" />
+        <location filename="../../core/globe.py" line="190" />
         <source>Could not add Sentinel 2 Cloudless layer</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../../core/globe.py" line="149" />
+        <location filename="../../core/globe.py" line="210" />
         <source>Countries</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../../core/globe.py" line="163" />
+        <location filename="../../core/globe.py" line="224" />
         <source>Could not add graticules</source>
-        <translation type="unfinished" />
-    </message>
-</context><context>
-    <name>GlobeBuilder</name>
-    <message>
-        <location filename="../../plugin.py" line="181" />
-        <location filename="../../plugin.py" line="57" />
-        <source>&amp;Globe Builder</source>
-        <translation type="unfinished" />
-    </message>
-    <message>
-        <location filename="../../plugin.py" line="157" />
-        <source>Build Globe view</source>
         <translation type="unfinished" />
     </message>
 </context><context>
     <name>GlobeBuilderDockWidget</name>
     <message>
-        <location filename="../../ui/globe_builder_dockwidget.py" line="265" />
+        <location filename="../../ui/globe_builder_dockwidget.py" line="336" />
         <source>Create new layout (LayoutGlobe)</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../../ui/globe_builder_dockwidget.py" line="356" />
+        <location filename="../../ui/globe_builder_dockwidget.py" line="421" />
         <source>Make sure to select an item from the Geolocation list</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../../ui/globe_builder_dockwidget.py" line="363" />
+        <location filename="../../ui/globe_builder_dockwidget.py" line="428" />
         <source>Make sure to have at least one layer in the project</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../../ui/globe_builder_dockwidget.py" line="377" />
+        <location filename="../../ui/globe_builder_dockwidget.py" line="442" />
         <source>Error occurred while parsing center of the globe</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../../ui/globe_builder_dockwidget.py" line="378" />
+        <location filename="../../ui/globe_builder_dockwidget.py" line="443" />
         <source>Traceback</source>
         <translation type="unfinished" />
     </message>
@@ -309,41 +296,63 @@
 </context><context>
     <name>Graticules</name>
     <message>
-        <location filename="../../core/graticules.py" line="39" />
+        <location filename="../../core/graticules.py" line="77" />
         <source>Graticules</source>
         <translation type="unfinished" />
     </message>
 </context><context>
     <name>Halo</name>
     <message>
-        <location filename="../../core/halo.py" line="48" />
+        <location filename="../../core/halo.py" line="97" />
         <source>Halo</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../../core/halo.py" line="140" />
+        <source>Could not add halo feature to the layer</source>
+        <translation type="unfinished" />
+    </message>
+</context><context>
+    <name>Plugin</name>
+    <message>
+        <location filename="../../plugin.py" line="91" />
+        <source>&amp;Globe Builder</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../../plugin.py" line="168" />
+        <source>Globe Builder</source>
+        <translation type="unfinished" />
+    </message>
+    <message>
+        <location filename="../../plugin.py" line="174" />
+        <source>Build Globe view</source>
         <translation type="unfinished" />
     </message>
 </context><context>
     <name>Projections</name>
     <message>
-        <location filename="../../definitions/projections.py" line="38" />
+        <location filename="../../definitions/projections.py" line="83" />
         <source>Azimuthal Orthographic</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../../definitions/projections.py" line="46" />
+        <location filename="../../definitions/projections.py" line="93" />
         <source>Equal Earth</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../../definitions/projections.py" line="50" />
+        <location filename="../../definitions/projections.py" line="97" />
         <source>Hammer &amp; Eckert-Greifendorff</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../../definitions/projections.py" line="53" />
+        <location filename="../../definitions/projections.py" line="100" />
         <source>Aitoff</source>
         <translation type="unfinished" />
     </message>
     <message>
-        <location filename="../../definitions/projections.py" line="56" />
+        <location filename="../../definitions/projections.py" line="103" />
         <source>Eckert I</source>
         <translation type="unfinished" />
     </message>

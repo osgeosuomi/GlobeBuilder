@@ -1,3 +1,39 @@
+#  Copyright (C) 2026 GlobeBuilder contributors.
+#
+#
+#  This file is part of GlobeBuilder.
+#
+#  GlobeBuilder is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  GlobeBuilder is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
+
+# Copyright (C) 2026 GlobeBuilder Contributors.
+#
+#
+# This file is part of GlobeBuilder.
+#
+# GlobeBuilder is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# GlobeBuilder is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
+
 #  Copyright (C) 2020-2026 GlobeBuilder contributors.
 #
 #
@@ -25,7 +61,7 @@ from qgis.PyQt.QtCore import QSettings, QUrl
 from qgis.PyQt.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
 from qgis_plugin_tools.tools.resources import plugin_name
 
-from globe_builder.definitions.settings import MAX_NAME_PARTS, NOMINATIM_URL
+from GlobeBuilder.definitions.settings import MAX_NAME_PARTS, NOMINATIM_URL
 
 if TYPE_CHECKING:
     from collections.abc import Callable

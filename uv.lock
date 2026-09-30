@@ -404,7 +404,7 @@ wheels = [
 ]
 
 [[package]]
-name = "globe-builder"
+name = "globebuilder"
 version = "0.0.0.post0"
 source = { editable = "." }
 dependencies = [

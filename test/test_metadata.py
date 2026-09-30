@@ -19,13 +19,13 @@
 import configparser
 from pathlib import Path
 
-import globe_builder
-from globe_builder.core.globe import LOGGER
+import GlobeBuilder
+from GlobeBuilder.core.globe import LOGGER
 
 
 def test_metadata():
     metadata = configparser.ConfigParser()
-    metadata.read(Path(globe_builder.__file__).parent / "metadata.txt")
+    metadata.read(Path(GlobeBuilder.__file__).parent / "metadata.txt")
     assert metadata["general"]["name"] == "Globe Builder"
     assert metadata["general"]["repository"].endswith("/GlobeBuilder")
 

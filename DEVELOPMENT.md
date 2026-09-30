@@ -73,7 +73,7 @@ README.md for update instructions.
 
 ## Code quality and style
 
-The included `globe-builder.code-workspace` file is preconfigured for
+The included `globebuilder.code-workspace` file is preconfigured for
 VS Code and provides recommended settings for:
 
 * Formatting

@@ -29,7 +29,7 @@ from qgis.core import (
 from qgis.utils import iface as utils_iface
 from qgis_plugin_tools.tools.i18n import tr
 
-from globe_builder.definitions.settings import WGS84
+from GlobeBuilder.definitions.settings import WGS84
 
 if typing.TYPE_CHECKING:
     from qgis.core import (

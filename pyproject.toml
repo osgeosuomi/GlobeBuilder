@@ -3,7 +3,7 @@ requires = ["uv_build>=0.12.15,<0.13"]
 build-backend = "uv_build"
 
 [project]
-name = "globe-builder"
+name = "globebuilder"
 requires-python = ">=3.12"
 version = "0.0.0.post0"
 description = "QGIS plugin for adding globe visualization to the current map or layout."
@@ -11,10 +11,10 @@ readme = "README.md"
 dependencies = ["qgis_plugin_tools"]
 
 [project.entry-points."qgis_plugin_dev_tools"]
-globe_builder = "globe_builder"
+GlobeBuilder = "GlobeBuilder"
 
 [tool.uv.build-backend]
-module-name = "globe_builder"
+module-name = "GlobeBuilder"
 include = [
   "py.typed",
   "metadata.txt",
@@ -25,12 +25,12 @@ include = [
 ]
 
 [tool.qgis_plugin_dev_tools]
-plugin_package_name = "globe_builder"
+plugin_package_name = "GlobeBuilder"
 runtime_requires = ["qgis_plugin_tools"]
 version_number_source = "pyproject"
 translation_language_codes = ["fi"]
-translation_search_paths = ["src/globe_builder"]
-translation_destination_path = "src/globe_builder/resources/i18n"
+translation_search_paths = ["src/GlobeBuilder"]
+translation_destination_path = "src/GlobeBuilder/resources/i18n"
 translation_pylupdate_command = "pylupdate6"
 
 [tool.uv]
@@ -100,9 +100,10 @@ lint.external = ["SC200", "QGS"]
 ban-relative-imports = "all"
 
 [tool.ruff.lint.isort]
-known-first-party = ["globe_builder"]
+known-first-party = ["GlobeBuilder"]
 
 [tool.ruff.lint.per-file-ignores]
+"src/GlobeBuilder/**" = ["N999"] # Package name must match the published plugin
 "{test,test_integration,test_e2e}/*" = [
   "INP001",
   "D",       # pydocstyle
@@ -155,7 +156,7 @@ source = ["src", "**/site-packages"]
 
 [tool.coverage.run]
 branch = true
-source_pkgs = ["globe_builder"]
+source_pkgs = ["GlobeBuilder"]
 
 [tool.coverage.report]
 exclude_also = [

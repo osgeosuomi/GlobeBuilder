@@ -21,17 +21,17 @@ from typing import TYPE_CHECKING
 import pytest
 from qgis.core import QgsProject
 
-from globe_builder import classFactory
-from globe_builder.definitions.projections import Projections
-from globe_builder.definitions.settings import DEFAULT_ORIGIN
-from globe_builder.ui.globe_builder_dockwidget import GlobeBuilderDockWidget
+from GlobeBuilder import classFactory
+from GlobeBuilder.definitions.projections import Projections
+from GlobeBuilder.definitions.settings import DEFAULT_ORIGIN
+from GlobeBuilder.ui.globe_builder_dockwidget import GlobeBuilderDockWidget
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
     from pytest_qgis import QgisInterface
 
-    from globe_builder.plugin import Plugin
+    from GlobeBuilder.plugin import Plugin
 
 
 @pytest.fixture

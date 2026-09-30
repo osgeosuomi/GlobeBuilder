@@ -18,7 +18,7 @@
 
 import pytest
 
-from globe_builder.env import EnvVariable
+from GlobeBuilder.env import EnvVariable
 
 MOCK_ENV_VARIABLE = "MOCK_ENV_VAR"
 

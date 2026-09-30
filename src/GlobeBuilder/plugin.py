@@ -1,3 +1,39 @@
+#  Copyright (C) 2026 GlobeBuilder contributors.
+#
+#
+#  This file is part of GlobeBuilder.
+#
+#  GlobeBuilder is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  GlobeBuilder is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
+
+# Copyright (C) 2026 GlobeBuilder Contributors.
+#
+#
+# This file is part of GlobeBuilder.
+#
+# GlobeBuilder is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# GlobeBuilder is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
+
 #  Copyright (C) 2020-2026 GlobeBuilder contributors.
 #
 #
@@ -29,9 +65,9 @@ from qgis_plugin_tools.tools.decorations import log_if_fails
 from qgis_plugin_tools.tools.i18n import tr
 from qgis_plugin_tools.tools.resources import resources_path
 
-import globe_builder
-from globe_builder import env
-from globe_builder.ui.globe_builder_dockwidget import GlobeBuilderDockWidget
+import GlobeBuilder
+from GlobeBuilder import env
+from GlobeBuilder.ui.globe_builder_dockwidget import GlobeBuilderDockWidget
 
 if typing.TYPE_CHECKING:
     from collections.abc import Callable
@@ -127,7 +163,7 @@ class Plugin:
     def initGui(self) -> None:  # noqa: N802
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
         self._teardown_loggers = custom_logging.setup_loggers(
-            globe_builder.__name__,
+            GlobeBuilder.__name__,
             qgis_plugin_tools.__name__,
             message_log_name=tr("Globe Builder"),
         )

@@ -1,3 +1,39 @@
+#  Copyright (C) 2026 GlobeBuilder contributors.
+#
+#
+#  This file is part of GlobeBuilder.
+#
+#  GlobeBuilder is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  GlobeBuilder is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
+
+# Copyright (C) 2026 GlobeBuilder Contributors.
+#
+#
+# This file is part of GlobeBuilder.
+#
+# GlobeBuilder is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# GlobeBuilder is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
+
 #  Copyright (C) 2020-2026 GlobeBuilder contributors.
 #
 #
@@ -31,15 +67,15 @@ from qgis_plugin_tools.tools.resources import load_ui, plugin_name
 from qgis_plugin_tools.tools.settings import get_setting, set_setting
 from qgis_plugin_tools.tools.version import proj_version
 
-from globe_builder.core.globe import Globe
-from globe_builder.core.utils.geocoder import Geocoder
-from globe_builder.core.utils.utils import (
+from GlobeBuilder.core.globe import Globe
+from GlobeBuilder.core.utils.geocoder import Geocoder
+from GlobeBuilder.core.utils.utils import (
     create_layout,
     get_map_center_coordinates,
     transform_to_wgs84,
 )
-from globe_builder.definitions.projections import Projections
-from globe_builder.definitions.settings import (
+from GlobeBuilder.definitions.projections import Projections
+from GlobeBuilder.definitions.settings import (
     DEFAULT_BACKGROUND_COLOR,
     DEFAULT_COUNTRIES_COLOR,
     DEFAULT_GRATICULES_COLOR,
@@ -63,8 +99,8 @@ if typing.TYPE_CHECKING:
     )
     from qgis.PyQt.QtGui import QCloseEvent, QColor
 
-    from globe_builder.core.utils.geocoder import Geolocations
-    from globe_builder.definitions.settings import Origin
+    from GlobeBuilder.core.utils.geocoder import Geolocations
+    from GlobeBuilder.definitions.settings import Origin
 
 FORM_CLASS: type = load_ui("globe_builder_dockwidget_base.ui")
 LOGGER = logging.getLogger(plugin_name())

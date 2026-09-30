@@ -1,3 +1,39 @@
+#  Copyright (C) 2026 GlobeBuilder contributors.
+#
+#
+#  This file is part of GlobeBuilder.
+#
+#  GlobeBuilder is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  GlobeBuilder is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
+
+# Copyright (C) 2026 GlobeBuilder Contributors.
+#
+#
+# This file is part of GlobeBuilder.
+#
+# GlobeBuilder is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# GlobeBuilder is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
+
 #  Copyright (C) 2020-2026 GlobeBuilder contributors.
 #
 #
@@ -45,14 +81,14 @@ from qgis_plugin_tools.tools.i18n import tr
 from qgis_plugin_tools.tools.resources import plugin_name
 from qgis_plugin_tools.tools.settings import get_setting
 
-from globe_builder.core.graticules import Graticules
-from globe_builder.core.halo import Halo
-from globe_builder.core.utils.utils import (
+from GlobeBuilder.core.graticules import Graticules
+from GlobeBuilder.core.halo import Halo
+from GlobeBuilder.core.utils.utils import (
     get_feature_ids_that_intersect_bbox,
     set_selection_based_style,
 )
-from globe_builder.definitions.projections import Projections
-from globe_builder.definitions.settings import (
+from GlobeBuilder.definitions.projections import Projections
+from GlobeBuilder.definitions.settings import (
     DEFAULT_LAYER_CONNECTION_TYPE,
     DEFAULT_ORIGIN,
     EARTH_RADIUS,
@@ -69,7 +105,7 @@ if typing.TYPE_CHECKING:
     from qgis.core import QgsLayerTreeGroup, QgsMapLayer, QgsPrintLayout
     from qgis.gui import QgisInterface
 
-    from globe_builder.definitions.settings import Origin
+    from GlobeBuilder.definitions.settings import Origin
 
 LOGGER = logging.getLogger(plugin_name())
 

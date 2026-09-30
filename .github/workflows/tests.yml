@@ -3,8 +3,7 @@ name: Tests
 on:
   pull_request:
   push:
-    branches:
-      - main
+    branches: [ main ]
   workflow_call:
 
 permissions:
@@ -22,7 +21,7 @@ jobs:
     strategy:
       matrix:
         # Adjust image tags as needed
-        qgis-image-tag: ["3.40-noble", "3.44-noble", "4.0-questing", "latest"]
+        qgis-image-tag: [ "3.40-noble", "3.44-noble", "4.0-questing", "latest" ]
       fail-fast: false
 
     steps:
