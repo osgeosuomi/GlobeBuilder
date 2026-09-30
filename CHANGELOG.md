@@ -2,9 +2,20 @@
 
 ## Unreleased
 
-* Add QGS 4 support
-* Adopt qgis-plugin-copier-template
+### New features
+* Add usability improvements
+
+### Fixes
 * Use correct nominatim url
+* Always set project crs on apply and centre ortho halo
+* Reset countries renderer when not using intersecting colors
+* Preserve canvas scale and center on projection change
+
+### Maintenance
+* Improve tests
+* Add QGS 4 support
+* Drop Python 3.9 and QGIS < 3.40 support
+* Adopt qgis-plugin-copier-template
 
 ## 0.6.0 - 2020-09-23
 
