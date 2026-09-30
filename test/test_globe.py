@@ -69,6 +69,17 @@ def test_projection_change_with_custom_origin(globe: Globe):
     assert QgsProject.instance().crs().toProj() == expected_proj
 
 
+def test_projection_change_preserves_scale_and_centers_origin(
+    globe: Globe, qgis_canvas: "QgsMapCanvas"
+):
+    qgis_canvas.zoomScale(5_000_000)
+    scale = qgis_canvas.scale()
+    globe.change_project_projection()
+    center = qgis_canvas.center()
+    assert qgis_canvas.scale() == pytest.approx(scale)
+    assert (round(center.x()), round(center.y())) == (0, 0)
+
+
 def test_loading_countries(
     globe: Globe, qgis_iface: "QgisInterface", qgis_canvas: "QgsMapCanvas"
 ):
