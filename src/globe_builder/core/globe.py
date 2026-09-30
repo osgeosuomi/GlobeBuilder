@@ -17,17 +17,20 @@
 #  along with GlobeBuilder.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
+import math
 import typing
 from pathlib import Path
 
 from qgis.core import (
     Qgis,
     QgsCoordinateReferenceSystem,
+    QgsCoordinateTransform,
     QgsLayoutItemMap,
     QgsLayoutPoint,
     QgsLayoutSize,
     QgsMapSettings,
     QgsMapThemeCollection,
+    QgsPointXY,
     QgsProject,
     QgsRasterLayer,
     QgsRectangle,
@@ -52,6 +55,7 @@ from globe_builder.definitions.projections import Projections
 from globe_builder.definitions.settings import (
     DEFAULT_LAYER_CONNECTION_TYPE,
     DEFAULT_ORIGIN,
+    EARTH_RADIUS,
     LOCAL_DATA_DIR,
     NATURAL_EARTH_BASE_URL,
     S2CLOUDLESS_WMTS_URL,
@@ -238,7 +242,25 @@ class Globe:
         self.group.insertLayer(index, layer)
 
     def change_project_projection(self) -> None:
-        """Set the project CRS to the globe projection."""
+        """Set the project CRS to the globe projection.
+
+        The canvas is centered on the origin and its scale is preserved.
+        """
+        canvas = iface.mapCanvas()
+        scale = canvas.scale()
+        crs = self._set_globe_crs()
+        canvas.setDestinationCrs(crs)
+        transformer = QgsCoordinateTransform(WGS84, crs, self.qgis_instance)
+        center = transformer.transform(
+            QgsPointXY(self.origin["lon"], self.origin["lat"])
+        )
+        size = 2 * EARTH_RADIUS
+        canvas.setExtent(QgsRectangle.fromCenterAndSize(center, size, size))
+        if math.isfinite(scale) and scale > 0:
+            canvas.zoomScale(scale)
+        canvas.refresh()
+
+    def _set_globe_crs(self) -> QgsCoordinateReferenceSystem:
         # Change to wgs84 to activate the changes in origin
         self.qgis_instance.setCrs(WGS84)
         proj_string = self.projection.value.proj_str(self.origin)
@@ -247,11 +269,12 @@ class Globe:
             msg = tr("Invalid projection string: {}", proj_string)
             raise ValueError(msg)
         self.qgis_instance.setCrs(crs)
+        return crs
 
     def change_temporarily_to_globe_projection(self) -> None:
         """Set the project CRS to the globe projection and restore the old one."""
         crs = self.qgis_instance.crs()
-        self.change_project_projection()
+        self._set_globe_crs()
         self.qgis_instance.setCrs(crs)
 
     def change_background_color(self, new_background_color: QColor) -> None:
