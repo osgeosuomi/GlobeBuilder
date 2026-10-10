@@ -29,7 +29,7 @@ from GlobeBuilder.ui.globe_builder_dockwidget import GlobeBuilderDockWidget
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
-    from pytest_qgis import QgisInterface
+    from qgis.gui import QgisInterface
 
     from GlobeBuilder.plugin import Plugin
 

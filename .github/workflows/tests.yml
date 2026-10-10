@@ -38,10 +38,13 @@ jobs:
         run: |
           uv venv --system-site-packages
 
-      - name: Run tests
+      - name: Run type checks
         run: |
-          uv sync --all-packages --no-group lint --locked --active
-          uv run pytest -v --qgis_disable_gui --cov --cov-report=xml
+          uv sync --all-packages --locked --active
+          uv run ty check
+
+      - name: Run tests
+        run: uv run pytest -v --qgis_disable_gui --cov --cov-report=xml
 
       - name: Check code coverage for changed lines
         if: ${{ matrix.qgis-image-tag == '3.44-noble' }}

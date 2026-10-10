@@ -28,6 +28,9 @@ jobs:
 
       - name: Run prek
         uses: j178/prek-action@4e14d07f9231acabce116ccfca13b13dd9755ece # v3.0.0
+        env:
+          # ty must be run with QGIS requirements available -> checked during test workflow
+          SKIP: ty
 
   commit-messages:
     if: ${{ github.event_name == 'pull_request' }}
