@@ -1,11 +1,10 @@
 # Globe Builder
 
-![Tests](https://github.com/osgeosuomi/GlobeBuilder/workflows/Tests/badge.svg)
-[![codecov.io](https://codecov.io/github/osgeosuomi/GlobeBuilder/coverage.svg?branch=master)](https://codecov.io/github/osgeosuomi/GlobeBuilder?branch=master)
-![Release](https://github.com/osgeosuomi/GlobeBuilder/workflows/Release/badge.svg)
-[![GPLv2 license](https://img.shields.io/badge/License-GPLv2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
+[![prek](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/j178/prek/master/docs/assets/badge-v0.json)](https://github.com/j178/prek)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![ty](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ty/main/assets/badge/v0.json)](https://github.com/astral-sh/ty)
 
-QGIS plugin that is meant for adding globe visualization to the current map using.
+QGIS plugin that is meant for adding globe visualization to the current map.
 
 ![Plugin in action](/images/screenshots/geocoding1.gif?raw=true "Plugin in action")
 

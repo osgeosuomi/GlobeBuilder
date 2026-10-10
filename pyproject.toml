@@ -8,7 +8,7 @@ requires-python = ">=3.12"
 version = "0.7.0.post0"
 description = "QGIS plugin for adding globe visualization to the current map or layout."
 readme = "README.md"
-dependencies = ["qgis_plugin_tools"]
+dependencies = ["qgis_plugin_tools>=2.1.0"]
 
 [project.entry-points."qgis_plugin_dev_tools"]
 GlobeBuilder = "GlobeBuilder"
@@ -26,7 +26,7 @@ include = [
 
 [tool.qgis_plugin_dev_tools]
 plugin_package_name = "GlobeBuilder"
-runtime_requires = ["qgis_plugin_tools"]
+runtime_requires = ["qgis_plugin_tools>=2.1.0"]
 version_number_source = "pyproject"
 translation_language_codes = ["fi"]
 translation_search_paths = ["src/GlobeBuilder"]
@@ -54,7 +54,7 @@ lint = [
   # Linting and formatting (ensure precommit yaml has same versions)
   "prek>=0.5.3",
   "ruff==0.16.8",
-  "mypy==2.3.1",
+  "ty==0.0.84",
   "flake8==7.4.1",
   "bandit==1.9.4",
   # flake8 plugins
@@ -62,6 +62,7 @@ lint = [
   "flake8-pyproject==1.2.4",
   "flake8-spellcheck==0.28.0",
   # Stubs for type checks
+  "PyQt5-stubs==5.15.6.0",
   "PyQt6-stubs==20250824",
 ]
 
@@ -139,11 +140,12 @@ per-file-ignores = [
 [tool.bandit]
 exclude_dirs = ["test"]
 
-[tool.mypy]
-python_version = "3.12"
-follow_imports = "normal"
-show_column_numbers = true
-check_untyped_defs = true
+[tool.ty.environment]
+python-version = "3.12"
+
+[tool.ty.rules]
+possibly-unresolved-reference = "warn"
+division-by-zero = "ignore"
 
 [tool.pytest.ini_options]
 testpaths = ["test"]

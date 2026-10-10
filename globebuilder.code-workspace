@@ -6,7 +6,7 @@
             "mikestead.dotenv",
             "tamasfe.even-better-toml",
             "ms-python.python",
-            "ms-python.mypy-type-checker",
+            "astral-sh.ty",
             "ms-python.flake8",
             "charliermarsh.ruff",
         ]
@@ -23,7 +23,7 @@
         // Linting
         "flake8.importStrategy": "fromEnvironment",
         "ruff.importStrategy": "fromEnvironment",
-        "mypy-type-checker.importStrategy": "fromEnvironment",
+        "ty.disableLanguageServices": true,
         // Formatting
         "editor.formatOnSave": true,
         "[python]": {

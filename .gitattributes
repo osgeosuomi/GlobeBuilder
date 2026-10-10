@@ -1,10 +1,10 @@
 # Force text files to use LF line endings on working tree.
 * text=auto eol=lf
 
+# Keep lines from both sides on merge, pre-commit sorts and removes duplicates
+whitelist.txt merge=union
+
 *.png binary
 *.gif binary
 *.xcf binary
 *.jpg binary
-
-# Keep lines from both sides on merge, pre-commit sorts and removes duplicates
-whitelist.txt merge=union
