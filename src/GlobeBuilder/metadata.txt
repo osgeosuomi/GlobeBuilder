@@ -29,7 +29,7 @@ tags=python, globe, world
 
 homepage=https://github.com/osgeosuomi/GlobeBuilder
 category=Plugins
-icon=icon.png
+icon=resources/icon.png
 # experimental flag
 experimental=False
 
