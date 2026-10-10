@@ -19,6 +19,7 @@
 import typing
 
 from qgis.core import (
+    Qgis,
     QgsCoordinateTransform,
     QgsCoordinateTransformContext,
     QgsFeatureRequest,
@@ -28,12 +29,16 @@ from qgis.core import (
 )
 from qgis.utils import iface as utils_iface
 from qgis_plugin_tools.tools.i18n import tr
+from qgis_plugin_tools.utils.typing_utils import require
 
 from GlobeBuilder.definitions.settings import WGS84
 
 if typing.TYPE_CHECKING:
+    from collections.abc import Iterable
+
     from qgis.core import (
         QgsCoordinateReferenceSystem,
+        QgsFeature,
         QgsPointXY,
         QgsProject,
         QgsRectangle,
@@ -42,12 +47,13 @@ if typing.TYPE_CHECKING:
     from qgis.gui import QgisInterface
     from qgis.PyQt.QtGui import QColor
 
+
 iface = typing.cast("QgisInterface", utils_iface)
 
 
 def create_layout(layout_name: str, qgis_instance: "QgsProject") -> QgsPrintLayout:
     """Create a new print layout, replacing any existing layout with the same name."""
-    manager = qgis_instance.layoutManager()
+    manager = require(qgis_instance.layoutManager())
     layouts_list = manager.printLayouts()
     # remove any duplicate layouts
     for existing_layout in layouts_list:
@@ -65,20 +71,20 @@ def set_selection_based_style(
 ) -> "QgsVectorLayer":
     """Style selected features with one color and the rest with another."""
     # noinspection PyCallByClass,PyArgumentList
-    fill_for_selected = QgsFillSymbol.createSimple({"color": "blue"})
+    fill_for_selected = require(QgsFillSymbol.createSimple({"color": "blue"}))
     fill_for_selected.setColor(s_color)
     rule_s = QgsRuleBasedRenderer.Rule(
         fill_for_selected, label=tr("Selected"), filterExp="is_selected()"
     )
 
-    fill_for_else = fill_for_selected.clone()
+    fill_for_else = require(fill_for_selected.clone())
     fill_for_else.setColor(else_color)
     rule_else = QgsRuleBasedRenderer.Rule(
         fill_for_else, label=tr("Not Selected"), elseRule=True
     )
 
     renderer = QgsRuleBasedRenderer(QgsRuleBasedRenderer.Rule(None))
-    root_rule = renderer.rootRule()
+    root_rule = require(renderer.rootRule())
     root_rule.appendChild(rule_s)
     root_rule.appendChild(rule_else)
 
@@ -107,16 +113,18 @@ def get_feature_ids_that_intersect_bbox(
         .setFilterRect(rectangle)
         .setDestinationCrs(crs=crs, context=QgsCoordinateTransformContext())
         .setNoAttributes()
-        .setFlags(QgsFeatureRequest.Flag.NoGeometry)
+        .setFlags(Qgis.FeatureRequestFlag.NoGeometry)
     )
-    return [f.id() for f in layer.getFeatures(request)]
+    # QgsFeatureIterator.__iter__ is typed as optional in the stubs
+    features = typing.cast("Iterable[QgsFeature]", layer.getFeatures(request))
+    return [f.id() for f in features]
 
 
 def get_map_center_coordinates(
     qgis_instance: "QgsProject", number_format: str = "{:.0f}"
 ) -> dict[str, float]:
     """Get the center of the map canvas in WGS84 coordinates."""
-    center_point = iface.mapCanvas().extent().center()
+    center_point = require(iface.mapCanvas()).extent().center()
     center_point = transform_to_wgs84(center_point, qgis_instance.crs(), qgis_instance)
     return {
         "lon": float(number_format.format(center_point.x())),

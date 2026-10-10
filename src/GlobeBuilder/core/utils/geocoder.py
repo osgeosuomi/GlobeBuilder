@@ -90,7 +90,7 @@ class Geocoder:
         user_agent = QSettings().value("/qgis/networkAndProxy/userAgent", "Mozilla/5.0")
         user_agent += " " if len(user_agent) else ""
         # noinspection PyUnresolvedReferences
-        user_agent += f"QGIS/{Qgis.QGIS_VERSION_INT}"
+        user_agent += f"QGIS/{Qgis.versionInt()}"
         user_agent += " GlobeBuilder-plugin"
 
         QgsMessageLog.logMessage(url, "GlobeBuilder", Qgis.MessageLevel.Info)
@@ -101,11 +101,12 @@ class Geocoder:
 
     def on_search_response(self, search_result: QNetworkReply) -> None:
         """Parse the response and pass the results to the callback."""
-        error = search_result.error()
+        # PyQt5 stubs declare the `error` method as a signal
+        error = search_result.error()  # ty: ignore[call-non-callable]
         result_dict: Geolocations = {}
         if error == QNetworkReply.NetworkError.NoError:
             bytes_string = search_result.readAll()
-            data_string = str(bytes_string, "utf-8")
+            data_string = bytes_string.data().decode("utf-8")
 
             result = json.loads(data_string)
 

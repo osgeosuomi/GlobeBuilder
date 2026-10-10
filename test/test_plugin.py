@@ -20,6 +20,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 from qgis.core import QgsProject
+from qgis_plugin_tools.utils.typing_utils import require
 
 from GlobeBuilder import classFactory
 from GlobeBuilder.definitions.projections import Projections
@@ -66,4 +67,4 @@ def test_apply_changes_project_crs(qgis_iface: "QgisInterface") -> None:
     dockwidget.pushButtonApplyVisualizations.click()
 
     expected_proj = Projections.AZIMUTHAL_ORTHOGRAPHIC.value.proj_str(DEFAULT_ORIGIN)
-    assert QgsProject.instance().crs().toProj() == expected_proj
+    assert require(QgsProject.instance()).crs().toProj() == expected_proj
