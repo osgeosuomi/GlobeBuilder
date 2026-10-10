@@ -61,6 +61,7 @@ from qgis.core import (
     Qgis,
     QgsCoordinateReferenceSystem,
     QgsCoordinateTransform,
+    QgsLayerTreeGroup,
     QgsLayoutItemMap,
     QgsLayoutPoint,
     QgsLayoutSize,
@@ -80,6 +81,7 @@ from qgis_plugin_tools.tools.custom_logging import bar_msg
 from qgis_plugin_tools.tools.i18n import tr
 from qgis_plugin_tools.tools.resources import plugin_name
 from qgis_plugin_tools.tools.settings import get_setting
+from qgis_plugin_tools.utils.typing_utils import require, require_type
 
 from GlobeBuilder.core.graticules import Graticules
 from GlobeBuilder.core.halo import Halo
@@ -102,7 +104,7 @@ from GlobeBuilder.definitions.settings import (
 if typing.TYPE_CHECKING:
     from collections.abc import Callable
 
-    from qgis.core import QgsLayerTreeGroup, QgsMapLayer, QgsPrintLayout
+    from qgis.core import QgsMapLayer, QgsPrintLayout
     from qgis.gui import QgisInterface
 
     from GlobeBuilder.definitions.settings import Origin
@@ -110,6 +112,7 @@ if typing.TYPE_CHECKING:
 LOGGER = logging.getLogger(plugin_name())
 
 iface = typing.cast("QgisInterface", utils_iface)
+
 
 type LayerStyleMethod = Callable[[QgsVectorLayer], None]
 
@@ -128,25 +131,25 @@ class Globe:
         self.origin = origin
         self.projection = projection
         # noinspection PyArgumentList
-        self.qgis_instance = QgsProject.instance()
+        self.qgis_instance = require(QgsProject.instance())
 
     @property
-    def group(self) -> "QgsLayerTreeGroup":
+    def group(self) -> QgsLayerTreeGroup:
         """Layer tree group of the globe, created if it does not exist."""
-        root = self.qgis_instance.layerTreeRoot()
+        root = require(self.qgis_instance.layerTreeRoot())
         groups = [
             child
             for child in root.children()
-            if root.isGroup(child) and child.name() == Globe.GROUP_NAME
+            if isinstance(child, QgsLayerTreeGroup) and child.name() == Globe.GROUP_NAME
         ]
         if len(groups) == 1:
             return groups[0]
-        return root.addGroup(Globe.GROUP_NAME)
+        return require(root.addGroup(Globe.GROUP_NAME))
 
     def delete_group(self) -> None:
         """Remove the globe group and its layers from the project."""
         group = self.group
-        root = self.qgis_instance.layerTreeRoot()
+        root = require(self.qgis_instance.layerTreeRoot())
         for layer in group.findLayers():
             self.qgis_instance.removeMapLayer(layer.layerId())
         root.removeChildNode(group)
@@ -195,7 +198,7 @@ class Globe:
 
             def style_countries(layer: QgsVectorLayer) -> None:
                 if intersecting_countries_color is None:
-                    symbol = QgsSymbol.defaultSymbol(layer.geometryType())
+                    symbol = require(QgsSymbol.defaultSymbol(layer.geometryType()))
                     symbol.setColor(countries_color)
                     layer.setRenderer(QgsSingleSymbolRenderer(symbol))
                 else:
@@ -203,7 +206,9 @@ class Globe:
                         layer, intersecting_countries_color, countries_color
                     )
                     ids = get_feature_ids_that_intersect_bbox(
-                        layer, iface.mapCanvas().extent(), self.qgis_instance.crs()
+                        layer,
+                        require(iface.mapCanvas()).extent(),
+                        self.qgis_instance.crs(),
                     )
                     layer.select(ids)
 
@@ -223,7 +228,7 @@ class Globe:
             else:
                 LOGGER.warning(tr("Could not add graticules"), extra=bar_msg())
 
-        iface.mapCanvas().refresh()
+        require(iface.mapCanvas()).refresh()
 
     def load_natural_earth_data(
         self, ne_data: "dict[str, tuple[str, LayerStyleMethod | None]]"
@@ -244,7 +249,9 @@ class Globe:
             if name not in existing_layer_names:
                 layer = self._load_natural_earth_layer(name, source, connection_type)
             else:
-                layer = self.qgis_instance.mapLayersByName(name)[0]
+                layer = require_type(
+                    self.qgis_instance.mapLayersByName(name)[0], QgsVectorLayer
+                )
 
             if styling_method is not None and layer is not None:
                 styling_method(layer)
@@ -261,7 +268,7 @@ class Globe:
             if not layer.isValid():
                 layer = QgsVectorLayer(local_path, name, "ogr")
         if not layer.isValid():
-            iface.messageBar().pushMessage(
+            require(iface.messageBar()).pushMessage(
                 tr("Could not load Natural Earth layer '{}'", name),
                 level=Qgis.MessageLevel.Warning,
                 duration=3,
@@ -282,7 +289,7 @@ class Globe:
 
         The canvas is centered on the origin and its scale is preserved.
         """
-        canvas = iface.mapCanvas()
+        canvas = require(iface.mapCanvas())
         scale = canvas.scale()
         crs = self._set_globe_crs()
         canvas.setDestinationCrs(crs)
@@ -327,14 +334,16 @@ class Globe:
         )
 
         # And apply for the current session
-        iface.mapCanvas().setCanvasColor(new_background_color)
-        iface.mapCanvas().refresh()
+        canvas = require(iface.mapCanvas())
+        canvas.setCanvasColor(new_background_color)
+        canvas.refresh()
 
     # noinspection PyArgumentList
     @staticmethod
     def get_existing_layer_names() -> list[str]:
         """Get the names of all the layers in the project."""
-        return [layer.name() for layer in QgsProject.instance().mapLayers().values()]
+        project = require(QgsProject.instance())
+        return [layer.name() for layer in project.mapLayers().values()]
 
     # noinspection PyArgumentList
     def add_halo(
@@ -359,10 +368,18 @@ class Globe:
         )
         self.insert_layer_to_group(layer, index)
 
+    def _group_layers(self) -> "list[QgsMapLayer]":
+        """Get the valid map layers of the globe group."""
+        return [
+            layer
+            for node in self.group.findLayers()
+            if (layer := node.layer()) is not None
+        ]
+
     def refresh_theme(self) -> None:
         """Recreate the globe map theme from the layers in the globe group."""
-        theme_collection = self.qgis_instance.mapThemeCollection()
-        layers = [layer.layer() for layer in self.group.findLayers()]
+        theme_collection = require(self.qgis_instance.mapThemeCollection())
+        layers = self._group_layers()
         if Globe.THEME_NAME in theme_collection.mapThemes():
             theme_collection.removeMapTheme(Globe.THEME_NAME)
         if layers:
@@ -385,7 +402,7 @@ class Globe:
         """
         if background_color is None:
             background_color = QColor(255, 255, 255, 0)
-        layers = [layer.layer() for layer in self.group.findLayers()]
+        layers = self._group_layers()
         # create map item in the layout
         map_item = QgsLayoutItemMap(layout)
         map_item.setRect(20, 20, 20, 20)

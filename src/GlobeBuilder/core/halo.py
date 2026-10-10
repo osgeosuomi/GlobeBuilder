@@ -65,11 +65,13 @@ from qgis.core import (
     QgsInnerShadowEffect,
     QgsPointXY,
     QgsProject,
+    QgsSingleSymbolRenderer,
     QgsVectorLayer,
 )
 from qgis.utils import iface as utils_iface
 from qgis_plugin_tools.tools.i18n import tr
 from qgis_plugin_tools.tools.settings import get_setting
+from qgis_plugin_tools.utils.typing_utils import require, require_type
 
 from GlobeBuilder.definitions.projections import Projections
 from GlobeBuilder.definitions.settings import (
@@ -87,6 +89,7 @@ if typing.TYPE_CHECKING:
     from qgis.PyQt.QtGui import QColor
 
     from GlobeBuilder.definitions.settings import Origin
+
 
 iface = typing.cast("QgisInterface", utils_iface)
 
@@ -116,14 +119,15 @@ class Halo:
         )
         proj_string = self.projection.value.proj_str(self.origin)
         # Block signals required to prevent the pop up asking about the crs change
-        iface.mainWindow().blockSignals(True)  # noqa: FBT003
+        main_window = require(iface.mainWindow())
+        main_window.blockSignals(True)  # noqa: FBT003
         layer = QgsVectorLayer(draw_method.value, self.LAYER_NAME, "memory")
         crs = layer.crs()
         if not crs.createFromProj(proj_string):
             msg = tr("Invalid projection string: {}", proj_string)
             raise ValueError(msg)
         layer.setCrs(crs)
-        iface.mainWindow().blockSignals(False)  # noqa: FBT003
+        main_window.blockSignals(False)  # noqa: FBT003
 
         feature = QgsFeature()
         if self.projection == Projections.AZIMUTHAL_ORTHOGRAPHIC:
@@ -135,7 +139,7 @@ class Halo:
             geom = self.create_grid_halo(layer.crs())
 
         feature.setGeometry(geom)
-        success, _ = layer.dataProvider().addFeatures([feature])
+        success, _ = require(layer.dataProvider()).addFeatures([feature])
         if not success:
             msg = tr("Could not add halo feature to the layer")
             raise ValueError(msg)
@@ -158,11 +162,11 @@ class Halo:
         use_effects: bool,
     ) -> QgsVectorLayer:
         """Style the halo layer with the given colors and optional shadow effects."""
-        renderer = layer.renderer()
-        symbol = renderer.symbol()
+        renderer = require_type(layer.renderer(), QgsSingleSymbolRenderer)
+        symbol = require(renderer.symbol())
 
         # noinspection PyArgumentList
-        fill_symbol = QgsFillSymbol.createSimple({"color": "blue"})
+        fill_symbol = require(QgsFillSymbol.createSimple({"color": "blue"}))
         fill_symbol_layer = fill_symbol.symbolLayers()[0]
         fill_symbol_layer.setStrokeColor(stroke_color)
         if fill_color is not None:
@@ -186,11 +190,13 @@ class Halo:
             renderer.setSymbol(fill_symbol)
         else:
             # noinspection PyCallByClass, PyArgumentList
-            geom_generator_symbol_layer = QgsGeometryGeneratorSymbolLayer.create(
-                {
-                    "SymbolType": "Fill",
-                    "geometryModifier": f"buffer($geometry, {EARTH_RADIUS:d})",
-                }
+            geom_generator_symbol_layer = require(
+                QgsGeometryGeneratorSymbolLayer.create(
+                    {
+                        "SymbolType": "Fill",
+                        "geometryModifier": f"buffer($geometry, {EARTH_RADIUS:d})",
+                    }
+                )
             )
             geom_generator_symbol_layer.setSubSymbol(fill_symbol)
             symbol.changeSymbolLayer(0, geom_generator_symbol_layer)

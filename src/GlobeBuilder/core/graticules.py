@@ -58,9 +58,11 @@ from qgis import processing
 from qgis.core import (
     QgsFillSymbol,
     QgsProcessingFeedback,
+    QgsSingleSymbolRenderer,
     QgsVectorLayer,
 )
 from qgis_plugin_tools.tools.i18n import tr
+from qgis_plugin_tools.utils.typing_utils import require, require_type
 
 from GlobeBuilder.definitions.settings import WGS84
 
@@ -91,9 +93,9 @@ class Graticules:
     @staticmethod
     def _set_styles(layer: QgsVectorLayer, stroke_color: "QColor") -> None:
         # Set transparent fill
-        renderer = layer.renderer()
+        renderer = require_type(layer.renderer(), QgsSingleSymbolRenderer)
         # noinspection PyArgumentList
-        fill_symbol = QgsFillSymbol.createSimple({"color": "white"})
+        fill_symbol = require(QgsFillSymbol.createSimple({"color": "white"}))
         fill_symbol_layer = fill_symbol.symbolLayers()[0]
         fill_color = fill_symbol_layer.fillColor()
         fill_color.setAlpha(0)
@@ -106,18 +108,18 @@ class Graticules:
     def _create_graticule_layer(
         self, temp_grid_layer: QgsVectorLayer
     ) -> QgsVectorLayer:
-        params = {
+        params: dict[str, object] = {
             "INPUT": temp_grid_layer,
             "OUTPUT": f"memory:{self.LAYER_NAME}",
             "VERTICES": self.number_of_vertices,
         }
-        result = processing.run(
-            "native:densifygeometries", params, feedback=self.feedback
+        result = require(
+            processing.run("native:densifygeometries", params, feedback=self.feedback)
         )
-        return result["OUTPUT"]
+        return require_type(result["OUTPUT"], QgsVectorLayer)
 
     def _create_grid_layer(self) -> QgsVectorLayer:
-        params = {
+        params: dict[str, object] = {
             "CRS": WGS84,
             "EXTENT": "-180,180,-90,90 [EPSG:4326]",
             "HOVERLAY": 0,
@@ -127,5 +129,7 @@ class Graticules:
             "VOVERLAY": 0,
             "VSPACING": self.spacing,
         }
-        result = processing.run("native:creategrid", params, feedback=self.feedback)
-        return result["OUTPUT"]
+        result = require(
+            processing.run("native:creategrid", params, feedback=self.feedback)
+        )
+        return require_type(result["OUTPUT"], QgsVectorLayer)

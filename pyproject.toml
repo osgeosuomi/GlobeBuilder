@@ -141,10 +141,14 @@ per-file-ignores = [
 exclude_dirs = ["test"]
 
 [tool.ty.environment]
-python-version = "3.12"
+# 3.13 is needed for the QGIS stubs, which decorate overloads with
+# `warnings.deprecated` (added in 3.13)
+python-version = "3.13"
 
 [tool.ty.rules]
 possibly-unresolved-reference = "warn"
+# Ignore comments are needed with some QGIS/Qt stub versions but not others
+unused-ignore-comment = "ignore"
 division-by-zero = "ignore"
 
 [tool.pytest.ini_options]

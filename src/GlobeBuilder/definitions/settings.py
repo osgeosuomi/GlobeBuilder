@@ -61,7 +61,7 @@ DEFAULT_NUMBER_OF_SEGMENTS = 64
 DEFAULT_LAYER_CONNECTION_TYPE = LayerConnectionType.local
 DEFAULT_HALO_DRAW_METHOD = HaloDrawMethod.buffered_point
 
-WGS84 = QgsCoordinateReferenceSystem("EPSG:4326")
+WGS84 = QgsCoordinateReferenceSystem.fromEpsgId(4326)
 
 # Colors
 DEFAULT_BACKGROUND_COLOR = QColor(Qt.GlobalColor.black)

@@ -66,6 +66,7 @@ from qgis_plugin_tools.tools.i18n import tr
 from qgis_plugin_tools.tools.resources import load_ui, plugin_name
 from qgis_plugin_tools.tools.settings import get_setting, set_setting
 from qgis_plugin_tools.tools.version import proj_version
+from qgis_plugin_tools.utils.typing_utils import require, require_type
 
 from GlobeBuilder.core.globe import Globe
 from GlobeBuilder.core.utils.geocoder import Geocoder
@@ -102,13 +103,15 @@ if typing.TYPE_CHECKING:
     from GlobeBuilder.core.utils.geocoder import Geolocations
     from GlobeBuilder.definitions.settings import Origin
 
-FORM_CLASS: type = load_ui("globe_builder_dockwidget_base.ui")
+# load_ui returns the generated form class, not a widget instance
+FORM_CLASS: typing.Any = load_ui("globe_builder_dockwidget_base.ui")
 LOGGER = logging.getLogger(plugin_name())
+
 
 iface = typing.cast("QgisInterface", utils_iface)
 
 
-class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):  # type: ignore[misc, valid-type]
+class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     """Dock widget for configuring and building the globe."""
 
     closingPlugin = pyqtSignal()
@@ -158,23 +161,32 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):  # type: ignore
         self.setupUi(self)
 
         # noinspection PyArgumentList
-        self.qgis_instance = QgsProject.instance()
-        self.layout_manager = self.qgis_instance.layoutManager()
+        self.qgis_instance = require(QgsProject.instance())
+        self.layout_manager = require(self.qgis_instance.layoutManager())
         self.globe = Globe()
         self.geocoder = Geocoder(self._on_geocoding_finished)
 
         # Set default values
         self.spinBoxMaxResults.setValue(
-            get_setting("maxNumberOfResults", DEFAULT_MAX_NUMBER_OF_RESULTS, int)
+            require_type(
+                get_setting("maxNumberOfResults", DEFAULT_MAX_NUMBER_OF_RESULTS, int),
+                int,
+            )
         )
         self.checkBoxCountries.setChecked(
-            get_setting("useNE-countries", DEFAULT_USE_NE_COUNTRIES, bool)
+            require_type(
+                get_setting("useNE-countries", DEFAULT_USE_NE_COUNTRIES, bool), bool
+            )
         )
         self.checkBoxGraticules.setChecked(
-            get_setting("useNE-graticules", DEFAULT_USE_NE_GRATICULES, bool)
+            require_type(
+                get_setting("useNE-graticules", DEFAULT_USE_NE_GRATICULES, bool), bool
+            )
         )
         self.checkBoxS2cloudless.setChecked(
-            get_setting("useS2cloudless", DEFAULT_USE_S2_CLOUDLESS, bool)
+            require_type(
+                get_setting("useS2cloudless", DEFAULT_USE_S2_CLOUDLESS, bool), bool
+            )
         )
 
         self.lineEditLonLat.setText("{lon}, {lat}".format(**DEFAULT_ORIGIN))
@@ -221,11 +233,12 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):  # type: ignore
         self.layout_manager.layoutRenamed.connect(self._populate_layouts)
         self.comboBoxProjections.currentTextChanged.connect(self._projection_changed)
 
-    def closeEvent(self, event: "QCloseEvent") -> None:  # noqa: N802
+    def closeEvent(self, event: "QCloseEvent | None") -> None:  # noqa: N802
         """Emit closingPlugin signal when the widget is closed."""
         # noinspection PyUnresolvedReferences
         self.closingPlugin.emit()
-        event.accept()
+        if event is not None:
+            event.accept()
 
     def _on_coordinates_toggled(self, is_checked: bool) -> None:  # noqa: FBT001
         self.lineEditLonLat.setEnabled(is_checked)
@@ -273,7 +286,7 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):  # type: ignore
         self.globe.change_project_projection()
         self._load_data_to_globe()
         self.globe.change_background_color(self.mColorButtonBackground.color())
-        self.mColorButtonBackground.setColor(iface.mapCanvas().canvasColor())
+        self.mColorButtonBackground.setColor(require(iface.mapCanvas()).canvasColor())
         self.globe.set_group_visibility(is_visible=True)
         self._add_halo_to_globe()
 
@@ -281,7 +294,7 @@ class GlobeBuilderDockWidget(QtWidgets.QDockWidget, FORM_CLASS):  # type: ignore
         self._load_data_to_globe(possibly_use_intersecting_colors=False)
         self._set_origin_and_projection()
         self.globe.change_background_color(self.mColorButtonBackground.color())
-        self.mColorButtonBackground.setColor(iface.mapCanvas().canvasColor())
+        self.mColorButtonBackground.setColor(require(iface.mapCanvas()).canvasColor())
         self.globe.change_project_projection()
         self.globe.set_group_visibility(is_visible=True)
         self._add_halo_to_globe()

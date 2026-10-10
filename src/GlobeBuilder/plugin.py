@@ -77,6 +77,7 @@ if typing.TYPE_CHECKING:
 
 LOGGER = logging.getLogger(__name__)
 
+
 iface = typing.cast("QgisInterface", utils_iface)
 
 
